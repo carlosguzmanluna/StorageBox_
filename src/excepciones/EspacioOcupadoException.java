@@ -2,12 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package util;
+package excepciones;
 
 /**
  *
  * @author norki
  */
-public class Estructuras_dinamicas {
+public class EspacioOcupadoException {
     
 }
