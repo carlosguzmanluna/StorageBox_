@@ -9,5 +9,6 @@ package modelo;
  * @author norki
  */
 public enum EstadoEspacio {
-    
+    Disponible,
+    Ocupado;
 }
