@@ -9,10 +9,11 @@ package modelo;
  * @author norki
  */
 public enum PuestoEmpleado {
-Administrador(900),
-Recepcionista(800),
-EncargadoBodega(700),
-Mantenimiento(7000);
+Administrador(950000),
+Recepcionista(700000),
+EncargadoBodega(650000),
+Mantenimiento(600000),
+OperarioCarga(575000);
 
 private final double salario;
 PuestoEmpleado(double salario) {
