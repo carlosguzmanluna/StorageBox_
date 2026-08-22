@@ -76,13 +76,10 @@ public class Cliente extends Persona {
     for (int i = 0; i < contratos.size(); i++) {
         Contrato contrato = contratos.get(i);
         EstadoContrato estado = contrato.getEstado();
-        if (estado == EstadoContrato.PENDIENTE || estado == EstadoContrato.ACTIVO) {
+        if (estado == EstadoContrato.Pendiente || estado == EstadoContrato.Activo) {
             return true;
         }
     }
     return false;
 }
-  
-    
-    
 }
