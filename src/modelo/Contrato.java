@@ -101,31 +101,37 @@ public class Contrato {
         return calcularSubtotal(periodos)
                 + calcularImpuestos(periodos, porcentaje);
     }
-    public void activar()
-            throws EstadoNoPermitidoException {
-        if (estado != EstadoContrato.Pendiente) {
-            throw new EstadoNoPermitidoException("Solo se puede activar un contrato pendiente");
-        }
-        estado = EstadoContrato.Activo;
+  public void activar()
+        throws EstadoNoPermitidoException {
+
+    if (estado != EstadoContrato.Pendiente) {
+        throw new EstadoNoPermitidoException("Solo se puede activar un contrato pendiente");
     }
+
+    estado = EstadoContrato.Activo;
+    espacio.Ocupar();
+}
     public void finalizar()
-            throws EstadoNoPermitidoException {
-        if (estado != EstadoContrato.Activo) {
-            throw new EstadoNoPermitidoException("Solo se puede finalizar un contrato activo");
-        }
-        estado = EstadoContrato.Finalizado;
+        throws EstadoNoPermitidoException {
+    if (estado != EstadoContrato.Activo) {
+        throw new EstadoNoPermitidoException("Solo se puede finalizar un contrato activo");
     }
+    estado = EstadoContrato.Finalizado;
+    espacio.Desocupar();
+}
     public void cancelar()
-            throws EstadoNoPermitidoException {
-        if (estado != EstadoContrato.Pendiente) {
-            throw new EstadoNoPermitidoException("Solo se puede cancelar un contrato pendiente");
-        }
-        estado = EstadoContrato.Cancelado;
+        throws EstadoNoPermitidoException {
+    if (estado != EstadoContrato.Pendiente) {
+        throw new EstadoNoPermitidoException("Solo se puede cancelar un contrato pendiente");
     }
+    estado = EstadoContrato.Cancelado;
+    espacio.Desocupar();
+}
     @Override
     public String toString() {
         return "Contrato " + numero;
     }
 }
+
     
 

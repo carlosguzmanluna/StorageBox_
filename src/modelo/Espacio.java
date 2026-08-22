@@ -56,8 +56,8 @@ public class Espacio {
 
     public EstadoEspacio getEstado() { return estado; }
 
-    public void marcarOcupado() { this.estado = EstadoEspacio.OCUPADO; }
-    public void marcarDisponible() { this.estado = EstadoEspacio.DISPONIBLE; }
+    public void Ocupar() { this.estado = EstadoEspacio.OCUPADO; }
+    public void Desocupar() { this.estado = EstadoEspacio.DISPONIBLE; }
 
     @Override
     public String toString() {
