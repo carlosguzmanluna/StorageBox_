@@ -9,5 +9,8 @@ package modelo;
  * @author norki
  */
 public enum EstadoContrato {
-    
+    Pendiente,
+    Activo,
+    Finalizado,
+    Cancelado;
 }
