@@ -1,15 +1,23 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Enum.java to edit this template
- */
 package modelo;
 
-/**
- *
- * @author norki
- */
 public enum TipoEspacio {
-    pequeño,
-    mediano,
-    grande;
+    PEQUENO(5, 25000),
+    MEDIANO(10, 45000),
+    GRANDE(20, 70000);
+
+    private final double metrosCuadrados;   // ← agregar "final" aquí
+    private final double precioMensual;     // ← y aquí
+
+    TipoEspacio(double metrosCuadrados, double precioMensual) {
+        this.metrosCuadrados = metrosCuadrados;
+        this.precioMensual = precioMensual;
+    }
+
+    public double getMetrosCuadrados() {
+        return metrosCuadrados;
+    }
+
+    public double getPrecioMensual() {
+        return precioMensual;
+    }
 }
