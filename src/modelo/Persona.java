@@ -28,8 +28,8 @@ protected Persona (String identificacion, String nombreCompleto, String telefono
     public String getTelefono() {
         return telefono;
     }
-    public String SetTelefono(){
-        return telefono;
+    public void SetTelefono(String Telefono){
+        this.telefono=telefono;
     } 
 }
 
