@@ -9,5 +9,7 @@ package modelo;
  * @author norki
  */
 public enum TipoEspacio {
-    
+    pequeño,
+    mediano,
+    grande;
 }
