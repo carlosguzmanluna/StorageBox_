@@ -8,6 +8,8 @@ package excepciones;
  *
  * @author norki
  */
-public class IdentificacionDuplicadaException {
-    
+public class IdentificacionDuplicadaException extends Exception {
+    public IdentificacionDuplicadaException(String mensaje) {
+        super(mensaje);
+    }
 }

@@ -8,6 +8,8 @@ package excepciones;
  *
  * @author norki
  */
-public class EspacioDuplicadoException {
-    
+public class EspacioDuplicadoException extends Exception {
+    public EspacioDuplicadoException(String mensaje) {
+        super(mensaje);
+    }
 }

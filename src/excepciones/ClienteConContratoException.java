@@ -8,6 +8,8 @@ package excepciones;
  *
  * @author norki
  */
-public class ClienteConContratoException {
-    
+public class ClienteConContratoException extends Exception {
+    public ClienteConContratoException(String mensaje) {
+        super(mensaje);
+    }
 }

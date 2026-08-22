@@ -8,6 +8,8 @@ package excepciones;
  *
  * @author norki
  */
-public class EstadoNoPermitidoException {
-    
+public class EstadoNoPermitidoException extends Exception {
+    public EstadoNoPermitidoException(String mensaje) {
+        super(mensaje);
+    }
 }

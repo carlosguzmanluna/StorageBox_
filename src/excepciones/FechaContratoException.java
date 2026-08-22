@@ -7,7 +7,8 @@ package excepciones;
 /**
  *
  * @author norki
- */
-public class FechaContratoException {
-    
+ */public class FechaContratoException extends Exception {
+    public FechaContratoException(String mensaje) {
+        super(mensaje);
+    }
 }
