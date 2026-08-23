@@ -41,14 +41,20 @@ public class ContratoController {
     private boolean existeConflictoDeFechas(Espacio espacio, LocalDate fechaInicio, LocalDate fechaFin) {
         for (int i = 0; i < contratos.size(); i++) {
             Contrato c = contratos.get(i);
+
             if (c.getEspacio() == espacio
                     && c.getEstado() != EstadoContrato.Cancelado
                     && c.getEstado() != EstadoContrato.Finalizado) {
 
-                boolean seSolapan = fechaInicio.isBefore(c.getFechaFin())
-                        && fechaFin.isAfter(c.getFechaInicio());
+                // Comparamos el contrato nuevo contra el contrato existente (c)
+                // Si el nuevo empieza antes de que termine el existente,
+                // y el nuevo termina despues de que empieza el existente,
+                // entonces las fechas se cruzan en algun punto.
 
-                if (seSolapan) {
+                boolean empiezaAntesDeQueTermineElOtro = fechaInicio.isBefore(c.getFechaFin());
+                boolean terminaDespuesDeQueEmpieceElOtro = fechaFin.isAfter(c.getFechaInicio());
+
+                if (empiezaAntesDeQueTermineElOtro && terminaDespuesDeQueEmpieceElOtro) {
                     return true;
                 }
             }
