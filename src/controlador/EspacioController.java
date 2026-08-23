@@ -43,8 +43,7 @@ throw new DatosInvalidosException("El espacio no puede ser nulo");}
             throws DatosInvalidosException {
         Espacio espacio = buscarPorNumero(numero);
         if (espacio == null) {
-            throw new DatosInvalidosException(
-                    "No existe un espacio con ese número");
+            throw new DatosInvalidosException("No existe un espacio con ese número");
         }
         espacio.setTipo(tipo);
         espacio.setMetrosCuadrados(metrosCuadrados);
@@ -56,13 +55,22 @@ throw new DatosInvalidosException("El espacio no puede ser nulo");}
         if (espacio == null) {
             throw new DatosInvalidosException("No existe un espacio con ese número");
         }
-        if (espacio.getEstado() == EstadoEspacio.OCUPADO) {
+        if (espacio.getEstado() == EstadoEspacio.Ocupado) {
             throw new EspacioOcupadoException("No se puede eliminar un espacio ocupado");
         }
 
         espacios.remove(espacio);
     }
-
+    public ArrayList<Espacio> buscarDisponiblesPorTipo(TipoEspacio tipo) {
+    ArrayList<Espacio> disponibles = new ArrayList<>();
+    for (int i = 0; i < espacios.size(); i++) {
+        if (espacios.get(i).getTipo() == tipo
+                && espacios.get(i).getEstado() == EstadoEspacio.Disponible) {
+            disponibles.add(espacios.get(i));
+        }
+    }
+    return disponibles;
+}
     public ArrayList<Espacio> listarEspacios() {
         return espacios;
     }

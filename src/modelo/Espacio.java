@@ -21,7 +21,7 @@ public class Espacio {
         this.tipo = tipo;
         this.metrosCuadrados = tipo.getMetrosCuadrados();
         this.precioMensual = tipo.getPrecioMensual();
-        this.estado = EstadoEspacio.DISPONIBLE;
+        this.estado = EstadoEspacio.Disponible;
     }
 
     public int getNumero() { return numero; }
@@ -56,8 +56,8 @@ public class Espacio {
 
     public EstadoEspacio getEstado() { return estado; }
 
-    public void Ocupar() { this.estado = EstadoEspacio.OCUPADO; }
-    public void Desocupar() { this.estado = EstadoEspacio.DISPONIBLE; }
+    public void Ocupar() { this.estado = EstadoEspacio.Ocupado; }
+    public void Desocupar() { this.estado = EstadoEspacio.Disponible; }
 
     @Override
     public String toString() {
