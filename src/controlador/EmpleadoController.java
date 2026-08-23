@@ -4,8 +4,8 @@
  */
 package controlador;
 import excepciones.DatosInvalidosException;
-import excepciones.IdentificacionDuplicadaException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import modelo.Empleado;
 import modelo.PuestoEmpleado;
 /**
@@ -13,44 +13,32 @@ import modelo.PuestoEmpleado;
  * @author norki
  */
 public class EmpleadoController {
-     private ArrayList<Empleado> empleados;
+    private HashMap<String, Empleado> empleados;
 
     public EmpleadoController() {
-        empleados = new ArrayList<>();}
+        empleados = new HashMap<>();
+    }
     public void agregarEmpleado(Empleado empleado)
-            throws DatosInvalidosException, IdentificacionDuplicadaException {
+            throws DatosInvalidosException {
         if (empleado == null) {
-            throw new DatosInvalidosException("El empleado no puede ser nulo");
+            throw new DatosInvalidosException("El empleado es obligatorio");
         }
-        if (buscarPorIdentificacion(empleado.getIdentificacion()) != null) {
-            throw new IdentificacionDuplicadaException("Ya existe un empleado con esa identificación");
+        if (empleados.containsKey(empleado.getIdentificacion())) {
+            throw new DatosInvalidosException("Ya existe un empleado con esa identificación");
         }
-        empleados.add(empleado);
+        empleados.put(empleado.getIdentificacion(), empleado);
     }
     public Empleado buscarPorIdentificacion(String identificacion) {
-        for (int i = 0; i < empleados.size(); i++) {
-            if (empleados.get(i).getIdentificacion().equals(identificacion)) {
-                return empleados.get(i);
-            }
-        }
-        return null;
-    }
-    public ArrayList<Empleado> buscarPorNombre(String nombre) {
-        ArrayList<Empleado> resultado = new ArrayList<>();
-        for (int i = 0; i < empleados.size(); i++) {
-            if (empleados.get(i).getNombreCompleto().toLowerCase().contains(nombre.toLowerCase())) {
-                resultado.add(empleados.get(i));
-            }
-        }
-        return resultado;
+        return empleados.get(identificacion);
     }
     public void actualizarEmpleado(String identificacion,
             String nombreCompleto, String telefono,
             PuestoEmpleado puesto)
             throws DatosInvalidosException {
-        Empleado empleado = buscarPorIdentificacion(identificacion);
+
+        Empleado empleado = empleados.get(identificacion);
         if (empleado == null) {
-            throw new DatosInvalidosException("No existe un empleado con esa identificación");
+            throw new DatosInvalidosException("No existe el empleado");
         }
         empleado.setNombreCompleto(nombreCompleto);
         empleado.setTelefono(telefono);
@@ -58,14 +46,14 @@ public class EmpleadoController {
     }
     public void eliminarEmpleado(String identificacion)
             throws DatosInvalidosException {
-        Empleado empleado = buscarPorIdentificacion(identificacion);
+        Empleado empleado = empleados.get(identificacion);
         if (empleado == null) {
-            throw new DatosInvalidosException("No existe un empleado con esa identificación");
+            throw new DatosInvalidosException("No existe el empleado");
         }
-        empleados.remove(empleado);
+        empleados.remove(identificacion);
     }
     public ArrayList<Empleado> listarEmpleados() {
-        return empleados;
+        return new ArrayList<>(empleados.values());
     }
 }
 
