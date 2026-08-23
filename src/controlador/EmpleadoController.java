@@ -14,7 +14,6 @@ import modelo.PuestoEmpleado;
  */
 public class EmpleadoController {
     private HashMap<String, Empleado> empleados;
-
     public EmpleadoController() {
         empleados = new HashMap<>();
     }

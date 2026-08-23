@@ -14,7 +14,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ContratoController {
-
     private LinkedList<Contrato> contratos;
     private ClienteController clienteController;
     private EspacioController espacioController;
@@ -24,7 +23,6 @@ public class ContratoController {
         this.clienteController = clienteController;
         this.espacioController = espacioController;
     }
-
     public ArrayList<Espacio> buscarEspaciosDisponibles(TipoEspacio tipo, LocalDate fechaInicio, LocalDate fechaFin) {
         ArrayList<Espacio> candidatos = espacioController.buscarDisponiblesPorTipo(tipo);
         ArrayList<Espacio> resultado = new ArrayList<>();
@@ -61,7 +59,6 @@ public class ContratoController {
         }
         return false;
     }
-
     public Contrato crearContrato(String identificacionCliente, TipoEspacio tipoEspacio,
             LocalDate fechaInicio, LocalDate fechaFin)
             throws DatosInvalidosException, FechaContratoException {
@@ -70,19 +67,16 @@ public class ContratoController {
         if (cliente == null) {
             throw new DatosInvalidosException("No existe un cliente con esa identificación");
         }
-
         ArrayList<Espacio> disponibles = buscarEspaciosDisponibles(tipoEspacio, fechaInicio, fechaFin);
         if (disponibles.isEmpty()) {
             throw new DatosInvalidosException("No hay espacios disponibles de ese tipo en esas fechas");
         }
-
         Espacio espacioAsignado = disponibles.get(0);
 
         Contrato contrato = new Contrato(cliente, espacioAsignado, fechaInicio, fechaFin);
         contratos.add(contrato);
         return contrato;
     }
-
     public void activarContrato(int numero) throws DatosInvalidosException, EstadoNoPermitidoException {
         Contrato contrato = buscarPorNumero(numero);
         if (contrato == null) {
