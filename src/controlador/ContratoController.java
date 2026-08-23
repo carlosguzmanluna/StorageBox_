@@ -75,6 +75,7 @@ public class ContratoController {
 
         Contrato contrato = new Contrato(cliente, espacioAsignado, fechaInicio, fechaFin);
         contratos.add(contrato);
+        cliente.agregarContrato(contrato);
         return contrato;
     }
     public void activarContrato(int numero) throws DatosInvalidosException, EstadoNoPermitidoException {
