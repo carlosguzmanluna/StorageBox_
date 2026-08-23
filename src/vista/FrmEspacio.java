@@ -33,17 +33,17 @@ public class FrmEspacio extends javax.swing.JFrame {
         lblNumero = new javax.swing.JLabel();
         txtNumero = new javax.swing.JTextField();
         lblTipoEspacio = new javax.swing.JLabel();
-        txtTipoEspacio = new javax.swing.JTextField();
         lblMetrosCuadrados = new javax.swing.JLabel();
         txtMetrosCuadrados = new javax.swing.JTextField();
         lblPrecio = new javax.swing.JLabel();
         lblEstado = new javax.swing.JLabel();
         txtPrecio = new javax.swing.JTextField();
-        txtPrecio1 = new javax.swing.JTextField();
+        txtEstado = new javax.swing.JTextField();
         btnAgregar = new javax.swing.JButton();
         btnActualizar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         btnLimpiar = new javax.swing.JButton();
+        cmbEspacio = new javax.swing.JComboBox<>();
         jPanel4 = new javax.swing.JPanel();
         lblLista = new javax.swing.JLabel();
         scrollEspacios = new javax.swing.JScrollPane();
@@ -63,11 +63,10 @@ public class FrmEspacio extends javax.swing.JFrame {
         lblTipoEspacio.setFont(new java.awt.Font("Segoe UI Emoji", 1, 14)); // NOI18N
         lblTipoEspacio.setText("Tipo de espacio:");
 
-        txtTipoEspacio.addActionListener(this::txtTipoEspacioActionPerformed);
-
         lblMetrosCuadrados.setFont(new java.awt.Font("Segoe UI Emoji", 1, 14)); // NOI18N
         lblMetrosCuadrados.setText("Metros Cuadrados:");
 
+        txtMetrosCuadrados.setText(" 5 m² ");
         txtMetrosCuadrados.addActionListener(this::txtMetrosCuadradosActionPerformed);
 
         lblPrecio.setFont(new java.awt.Font("Segoe UI Emoji", 1, 14)); // NOI18N
@@ -76,9 +75,11 @@ public class FrmEspacio extends javax.swing.JFrame {
         lblEstado.setFont(new java.awt.Font("Segoe UI Emoji", 1, 14)); // NOI18N
         lblEstado.setText("Estado:");
 
+        txtPrecio.setText("₡25000");
         txtPrecio.addActionListener(this::txtPrecioActionPerformed);
 
-        txtPrecio1.addActionListener(this::txtPrecio1ActionPerformed);
+        txtEstado.setText("Disponible");
+        txtEstado.addActionListener(this::txtEstadoActionPerformed);
 
         btnAgregar.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
         btnAgregar.setText("Agregar");
@@ -114,25 +115,22 @@ public class FrmEspacio extends javax.swing.JFrame {
                                 .addGap(29, 29, 29)
                                 .addComponent(lblNumero)))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtTipoEspacio, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnAgregar)
+                            .addComponent(txtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmbEspacio, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(8, 8, 8)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel3Layout.createSequentialGroup()
-                                    .addGap(8, 8, 8)
-                                    .addComponent(lblPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(jPanel3Layout.createSequentialGroup()
-                                    .addGap(32, 32, 32)
-                                    .addComponent(lblEstado))))
+                                .addComponent(lblEstado)
+                                .addComponent(btnAgregar)))
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addGap(20, 20, 20)
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtPrecio1, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(txtEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addGap(47, 47, 47)
                                 .addComponent(btnActualizar)
@@ -152,7 +150,7 @@ public class FrmEspacio extends javax.swing.JFrame {
                 .addGap(15, 15, 15)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblTipoEspacio)
-                    .addComponent(txtTipoEspacio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbEspacio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(15, 15, 15)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblMetrosCuadrados)
@@ -164,7 +162,7 @@ public class FrmEspacio extends javax.swing.JFrame {
                 .addGap(15, 15, 15)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblEstado)
-                    .addComponent(txtPrecio1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(40, 40, 40)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAgregar)
@@ -246,7 +244,7 @@ public class FrmEspacio extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblTitulo)
-                .addGap(226, 226, 226))
+                .addGap(244, 244, 244))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -279,10 +277,6 @@ public class FrmEspacio extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNumeroActionPerformed
 
-    private void txtTipoEspacioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTipoEspacioActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtTipoEspacioActionPerformed
-
     private void txtMetrosCuadradosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMetrosCuadradosActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtMetrosCuadradosActionPerformed
@@ -291,9 +285,9 @@ public class FrmEspacio extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtPrecioActionPerformed
 
-    private void txtPrecio1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrecio1ActionPerformed
+    private void txtEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEstadoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtPrecio1ActionPerformed
+    }//GEN-LAST:event_txtEstadoActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         // TODO add your handling code here:
@@ -333,6 +327,7 @@ public class FrmEspacio extends javax.swing.JFrame {
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnLimpiar;
+    private javax.swing.JComboBox<String> cmbEspacio;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -346,10 +341,9 @@ public class FrmEspacio extends javax.swing.JFrame {
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JScrollPane scrollEspacios;
     private javax.swing.JTable tblEspacios;
+    private javax.swing.JTextField txtEstado;
     private javax.swing.JTextField txtMetrosCuadrados;
     private javax.swing.JTextField txtNumero;
     private javax.swing.JTextField txtPrecio;
-    private javax.swing.JTextField txtPrecio1;
-    private javax.swing.JTextField txtTipoEspacio;
     // End of variables declaration//GEN-END:variables
 }
