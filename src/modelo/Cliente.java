@@ -21,8 +21,8 @@ public class Cliente extends Persona {
     private String correoElectronico;
     private final List<Contrato> contratos;
 
-    public Cliente(LocalDate fechaNacimiento, String correoElectronico, List<Contrato> contratos, 
-            String identificacion, String nombreCompleto, String telefono) throws DatosInvalidosException{
+    public Cliente(String identificacion, String nombreCompleto, String telefono,
+        LocalDate fechaNacimiento, String correoElectronico) throws DatosInvalidosException{
         super(identificacion, nombreCompleto, telefono);
      
         //Aqui piden que los campos no esten vacion
