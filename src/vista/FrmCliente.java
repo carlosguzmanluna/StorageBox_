@@ -115,7 +115,11 @@ public class FrmCliente extends javax.swing.JFrame
         btnLimpiar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblClientes = new javax.swing.JTable();
+<<<<<<< HEAD
         jTextField2 = new javax.swing.JTextField();
+=======
+        txtFechaNacimiento = new javax.swing.JTextField();
+>>>>>>> 068e7ff304080170694455ede9d6cd206280a468
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
@@ -227,7 +231,11 @@ public class FrmCliente extends javax.swing.JFrame
                                     .addComponent(txtCorreo)
                                     .addComponent(txtNombreCompleto)
                                     .addComponent(txtEdad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+<<<<<<< HEAD
                                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))))
+=======
+                                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+>>>>>>> 068e7ff304080170694455ede9d6cd206280a468
                         .addContainerGap())
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(0, 48, Short.MAX_VALUE)
@@ -267,7 +275,11 @@ public class FrmCliente extends javax.swing.JFrame
                     .addComponent(txtEdad))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+<<<<<<< HEAD
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+=======
+                    .addComponent(txtFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+>>>>>>> 068e7ff304080170694455ede9d6cd206280a468
                     .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -436,7 +448,10 @@ frmCliente.setVisible(true);
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField1;
+<<<<<<< HEAD
     private javax.swing.JTextField jTextField2;
+=======
+>>>>>>> 068e7ff304080170694455ede9d6cd206280a468
     private javax.swing.JTable tblClientes;
     private javax.swing.JTextField txtCorreo;
     private javax.swing.JLabel txtEdad;
