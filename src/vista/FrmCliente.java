@@ -3,20 +3,85 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package vista;
+import controlador.FrmView;
+import controlador.StorageBoxController;
+import excepciones.ClienteConContratoException;
+import excepciones.DatosInvalidosException;
+import excepciones.IdentificacionDuplicadaException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import modelo.Cliente;
 
 /**
  *
  * @author norki
  */
-public class FrmCliente extends javax.swing.JFrame {
-    
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrmCliente.class.getName());
+public class FrmCliente extends javax.swing.JFrame
+        implements FrmView<Cliente> {
+
+    private StorageBoxController controller;
+
+    private static final java.util.logging.Logger logger =
+            java.util.logging.Logger.getLogger(FrmCliente.class.getName());
+
 
     /**
      * Creates new form FrmCliente
+     * @param controller
      */
-    public FrmCliente() {
+    public FrmCliente(StorageBoxController controller) {
         initComponents();
+         this.controller = controller;
+        cargarClientes();
+    }
+    
+     private void cargarClientes() {
+        DefaultTableModel modelo =
+                (DefaultTableModel) tblClientes.getModel();
+        modelo.setRowCount(0);
+        ArrayList<Cliente> lista = new ArrayList<>(
+                controller.listarClientes());
+        for (int i = 0; i < lista.size(); i++) {
+            Cliente cliente = lista.get(i);
+            modelo.addRow(new Object[]{
+                cliente.getIdentificacion(),
+                cliente.getNombreCompleto(),
+                cliente.getTelefono(),
+                cliente.getCorreoElectronico(),
+                cliente.getFechaNacimiento(),
+                cliente.calcularEdad()
+            });
+        }
+    }
+     @Override
+    public void clear() {
+        txtIdentificacion.setText("");
+        txtNombreCompleto.setText("");
+        txtTelefono1.setText("");
+        txtCorreo.setText("");
+        txtFechaNacimiento.setText("");
+        lblEdadValor.setText("-");
+    }
+    @Override
+    public void showData(Cliente data) {
+        txtIdentificacion.setText(data.getIdentificacion());
+        txtNombreCompleto.setText(data.getNombreCompleto());
+        txtTelefono1.setText(data.getTelefono());
+        txtCorreo.setText(data.getCorreoElectronico());
+        txtFechaNacimiento.setText(data.getFechaNacimiento().toString());
+        lblEdadValor.setText(String.valueOf(data.calcularEdad()));
+    }
+
+    @Override
+    public void showError(String error) {
+        JOptionPane.showMessageDialog(this,error,"Error",JOptionPane.ERROR_MESSAGE);
+    }
+
+    @Override
+    public void showMessage(String message) {JOptionPane.showMessageDialog(this,message,"StorageBox",JOptionPane.INFORMATION_MESSAGE
+        );
     }
 
     /**
@@ -58,7 +123,7 @@ public class FrmCliente extends javax.swing.JFrame {
 
         jTextField1.setText("jTextField1");
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel7.setFont(new java.awt.Font("Georgia", 0, 24)); // NOI18N
         jLabel7.setText("Cliente");
@@ -68,16 +133,16 @@ public class FrmCliente extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(166, 166, 166)
+                .addGap(231, 231, 231)
                 .addComponent(jLabel7)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(17, Short.MAX_VALUE)
                 .addComponent(jLabel7)
-                .addContainerGap(8, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jLabel3.setFont(new java.awt.Font("Georgia", 0, 18)); // NOI18N
@@ -95,6 +160,8 @@ public class FrmCliente extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Georgia", 0, 18)); // NOI18N
         jLabel4.setText("Nombre Completo");
 
+        txtIdentificacion.addActionListener(this::txtIdentificacionActionPerformed);
+
         txtNombreCompleto.addActionListener(this::txtNombreCompletoActionPerformed);
 
         txtCorreo.addActionListener(this::txtCorreoActionPerformed);
@@ -108,14 +175,19 @@ public class FrmCliente extends javax.swing.JFrame {
         txtEdad.setText("Edad");
 
         btnAgregar.setText("Agregar");
+        btnAgregar.addActionListener(this::btnAgregarActionPerformed);
 
         btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(this::btnBuscarActionPerformed);
 
         btnActualizar.setText("Actualizar");
+        btnActualizar.addActionListener(this::btnActualizarActionPerformed);
 
         btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(this::btnEliminarActionPerformed);
 
         btnLimpiar.setText("Limpiar");
+        btnLimpiar.addActionListener(this::btnLimpiarActionPerformed);
 
         tblClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -129,6 +201,8 @@ public class FrmCliente extends javax.swing.JFrame {
             }
         ));
         jScrollPane1.setViewportView(tblClientes);
+
+        txtFechaNacimiento.addActionListener(this::txtFechaNacimientoActionPerformed);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -189,9 +263,9 @@ public class FrmCliente extends javax.swing.JFrame {
                     .addComponent(txtIdentificacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtNombreCompleto, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel6))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -247,11 +321,96 @@ public class FrmCliente extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtTelefono1ActionPerformed
 
+    private void txtIdentificacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdentificacionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtIdentificacionActionPerformed
+
+    private void txtFechaNacimientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFechaNacimientoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFechaNacimientoActionPerformed
+
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+         try {
+        String identificacion = txtIdentificacion.getText();
+        String nombreCompleto = txtNombreCompleto.getText();
+        String telefono = txtTelefono1.getText();
+        String correo = txtCorreo.getText();
+        LocalDate fechaNacimiento =
+                LocalDate.parse(txtFechaNacimiento.getText());
+        controller.agregarCliente(identificacion,nombreCompleto, telefono,fechaNacimiento,correo);
+        showMessage("Cliente agregado correctamente");
+        cargarClientes();
+        clear();
+    } catch (DatosInvalidosException
+            | IdentificacionDuplicadaException ex) {
+        showError(ex.getMessage());
+    } catch (Exception ex) {
+        showError("La fecha ingresada no es válida");
+    }
+    }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+         try {
+        String identificacion =
+        txtIdentificacion.getText();
+        String nombreCompleto =
+         txtNombreCompleto.getText();
+        String telefono =
+         txtTelefono1.getText();
+        String correo =
+         txtCorreo.getText();
+        controller.actualizarCliente(identificacion,nombreCompleto,telefono,correo);
+        showMessage("Cliente actualizado correctamente");
+        cargarClientes();
+        clear();
+    } catch (Exception ex) {
+        showError(ex.getMessage());
+    }
+    }//GEN-LAST:event_btnActualizarActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        try {
+        String identificacion =
+        txtIdentificacion.getText();
+        controller.eliminarCliente(identificacion);
+        showMessage("Cliente eliminado correctamente");
+        cargarClientes();
+        clear();
+    } catch (ClienteConContratoException ex) {
+        showError(ex.getMessage());
+    } catch (Exception ex) {
+        showError(ex.getMessage());
+    }
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+         clear();
+    }//GEN-LAST:event_btnLimpiarActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+         try {
+        String identificacion =
+        txtIdentificacion.getText();
+        Cliente cliente =
+       controller.buscarPorIdentificacion(identificacion);
+        if (cliente == null) {
+            throw new Exception("No existe un cliente con esa identificación");
+        }
+        showData(cliente);
+    } catch (Exception ex) {
+        showError(ex.getMessage());
+    }
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
+ StorageBoxController controller =
+  new StorageBoxController();
+FrmCliente frmCliente =
+ new FrmCliente(controller);
+frmCliente.setVisible(true);
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
@@ -269,7 +428,7 @@ public class FrmCliente extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new FrmCliente().setVisible(true));
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
