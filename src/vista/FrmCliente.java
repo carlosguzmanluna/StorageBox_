@@ -107,7 +107,6 @@ public class FrmCliente extends javax.swing.JFrame
         txtNombreCompleto = new javax.swing.JTextField();
         txtCorreo = new javax.swing.JTextField();
         txtTelefono1 = new javax.swing.JTextField();
-        lblEdadValor = new javax.swing.JLabel();
         txtEdad = new javax.swing.JLabel();
         btnAgregar = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
@@ -117,6 +116,7 @@ public class FrmCliente extends javax.swing.JFrame
         jScrollPane1 = new javax.swing.JScrollPane();
         tblClientes = new javax.swing.JTable();
         txtFechaNacimiento = new javax.swing.JTextField();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel1.setText("Cliente");
@@ -167,9 +167,6 @@ public class FrmCliente extends javax.swing.JFrame
         txtCorreo.addActionListener(this::txtCorreoActionPerformed);
 
         txtTelefono1.addActionListener(this::txtTelefono1ActionPerformed);
-
-        lblEdadValor.setFont(new java.awt.Font("Georgia", 0, 18)); // NOI18N
-        lblEdadValor.setText("-");
 
         txtEdad.setFont(new java.awt.Font("Georgia", 0, 18)); // NOI18N
         txtEdad.setText("Edad");
@@ -236,7 +233,7 @@ public class FrmCliente extends javax.swing.JFrame
                                     .addComponent(txtCorreo)
                                     .addComponent(txtNombreCompleto)
                                     .addComponent(txtEdad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(lblEdadValor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addContainerGap())
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(0, 48, Short.MAX_VALUE)
@@ -275,9 +272,9 @@ public class FrmCliente extends javax.swing.JFrame
                     .addComponent(jLabel5)
                     .addComponent(txtEdad))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblEdadValor)
-                    .addComponent(txtFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAgregar)
@@ -437,6 +434,7 @@ frmCliente.setVisible(true);
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnLimpiar;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -448,7 +446,6 @@ frmCliente.setVisible(true);
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JLabel lblEdadValor;
     private javax.swing.JTable tblClientes;
     private javax.swing.JTextField txtCorreo;
     private javax.swing.JLabel txtEdad;

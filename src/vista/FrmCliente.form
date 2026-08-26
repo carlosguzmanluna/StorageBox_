@@ -125,7 +125,7 @@
                                       <Component id="txtCorreo" max="32767" attributes="0"/>
                                       <Component id="txtNombreCompleto" max="32767" attributes="0"/>
                                       <Component id="txtEdad" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="lblEdadValor" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="jDateChooser1" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -177,9 +177,9 @@
                       <Component id="txtEdad" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lblEdadValor" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtFechaNacimiento" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="txtFechaNacimiento" min="-2" max="-2" attributes="0"/>
+                      <Component id="jDateChooser1" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -256,14 +256,6 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtTelefono1ActionPerformed"/>
           </Events>
-        </Component>
-        <Component class="javax.swing.JLabel" name="lblEdadValor">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Georgia" size="18" style="0"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="-"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="txtEdad">
           <Properties>
@@ -377,6 +369,8 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtFechaNacimientoActionPerformed"/>
           </Events>
+        </Component>
+        <Component class="com.toedter.calendar.JDateChooser" name="jDateChooser1">
         </Component>
       </SubComponents>
     </Container>
