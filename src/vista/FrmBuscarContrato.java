@@ -164,7 +164,53 @@ public Contrato getContratoSeleccionado() {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-    listaContratos = storageBoxController.listarContratos();
+    String textoNumero = txtNumero.getText().trim();
+    String textoCliente = txtCliente.getText().trim();
+    String textoEspacio = txtEspacio.getText().trim();
+    String estadoSeleccionado = (String) cboEstado.getSelectedItem();
+
+    List<Contrato> todos = storageBoxController.listarContratos();
+    listaContratos = new java.util.ArrayList<>();
+
+    for (int i = 0; i < todos.size(); i++) {
+        Contrato c = todos.get(i);
+
+        boolean coincideNumero = true;
+        if (!textoNumero.isEmpty()) {
+            int numeroBuscado = Integer.parseInt(textoNumero);
+            if (c.getNumero() != numeroBuscado) {
+                coincideNumero = false;
+            }
+        }
+
+        boolean coincideCliente = true;
+        if (!textoCliente.isEmpty()) {
+            String identificacionCliente = c.getCliente().getIdentificacion();
+            if (!identificacionCliente.contains(textoCliente)) {
+                coincideCliente = false;
+            }
+        }
+
+        boolean coincideEspacio = true;
+        if (!textoEspacio.isEmpty()) {
+            int numeroEspacioBuscado = Integer.parseInt(textoEspacio);
+            if (c.getEspacio().getNumero() != numeroEspacioBuscado) {
+                coincideEspacio = false;
+            }
+        }
+
+        boolean coincideEstado = true;
+        if (!estadoSeleccionado.equals("Todos")) {
+            String estadoContrato = c.getEstado().toString();
+            if (!estadoContrato.equals(estadoSeleccionado)) {
+                coincideEstado = false;
+            }
+        }
+
+        if (coincideNumero && coincideCliente && coincideEspacio && coincideEstado) {
+            listaContratos.add(c);
+        }
+    }
 
     DefaultTableModel modelo = (DefaultTableModel) tblContratos.getModel();
     modelo.setRowCount(0);
