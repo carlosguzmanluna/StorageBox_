@@ -9,7 +9,9 @@ import excepciones.ClienteConContratoException;
 import excepciones.DatosInvalidosException;
 import excepciones.IdentificacionDuplicadaException;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelo.Cliente;
@@ -26,14 +28,13 @@ public class FrmCliente extends javax.swing.JFrame
     private static final java.util.logging.Logger logger =
             java.util.logging.Logger.getLogger(FrmCliente.class.getName());
 
-
     /**
      * Creates new form FrmCliente
      * @param controller
      */
     public FrmCliente(StorageBoxController controller) {
         initComponents();
-         this.controller = controller;
+        this.controller = controller;
         cargarClientes();
     }
     
@@ -55,33 +56,42 @@ public class FrmCliente extends javax.swing.JFrame
             });
         }
     }
-     @Override
+     
+    @Override
     public void clear() {
         txtIdentificacion.setText("");
         txtNombreCompleto.setText("");
         txtTelefono1.setText("");
         txtCorreo.setText("");
-        txtFechaNacimiento.setText("");
-        lblEdadValor.setText("-");
+        jDateChooser1.setDate(null);
+        lblEdadValor.setText("-"); // Asegúrate de que el JLabel se llame lblEdadValor o ajústalo según tu diseño
     }
+
     @Override
     public void showData(Cliente data) {
         txtIdentificacion.setText(data.getIdentificacion());
         txtNombreCompleto.setText(data.getNombreCompleto());
         txtTelefono1.setText(data.getTelefono());
         txtCorreo.setText(data.getCorreoElectronico());
-        txtFechaNacimiento.setText(data.getFechaNacimiento().toString());
-        lblEdadValor.setText(String.valueOf(data.calcularEdad()));
+        
+        if (data.getFechaNacimiento() != null) {
+            Date date = Date.from(data.getFechaNacimiento().atStartOfDay(ZoneId.systemDefault()).toInstant());
+            jDateChooser1.setDate(date);
+        } else {
+            jDateChooser1.setDate(null);
+        }
+        
+        txtEdad.setText(String.valueOf(data.calcularEdad()));
     }
 
     @Override
     public void showError(String error) {
-        JOptionPane.showMessageDialog(this,error,"Error",JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this, error, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
     @Override
-    public void showMessage(String message) {JOptionPane.showMessageDialog(this,message,"StorageBox",JOptionPane.INFORMATION_MESSAGE
-        );
+    public void showMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "StorageBox", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /**
@@ -115,11 +125,6 @@ public class FrmCliente extends javax.swing.JFrame
         btnLimpiar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblClientes = new javax.swing.JTable();
-<<<<<<< HEAD
-        jTextField2 = new javax.swing.JTextField();
-=======
-        txtFechaNacimiento = new javax.swing.JTextField();
->>>>>>> 068e7ff304080170694455ede9d6cd206280a468
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
@@ -230,12 +235,7 @@ public class FrmCliente extends javax.swing.JFrame
                                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE)
                                     .addComponent(txtCorreo)
                                     .addComponent(txtNombreCompleto)
-                                    .addComponent(txtEdad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-<<<<<<< HEAD
-                                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))))
-=======
-                                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
->>>>>>> 068e7ff304080170694455ede9d6cd206280a468
+                                    .addComponent(txtEdad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                         .addContainerGap())
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(0, 48, Short.MAX_VALUE)
@@ -274,13 +274,7 @@ public class FrmCliente extends javax.swing.JFrame
                     .addComponent(jLabel5)
                     .addComponent(txtEdad))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-<<<<<<< HEAD
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-=======
-                    .addComponent(txtFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
->>>>>>> 068e7ff304080170694455ede9d6cd206280a468
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAgregar)
@@ -330,56 +324,59 @@ public class FrmCliente extends javax.swing.JFrame
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
          try {
-        String identificacion = txtIdentificacion.getText();
-        String nombreCompleto = txtNombreCompleto.getText();
-        String telefono = txtTelefono1.getText();
-        String correo = txtCorreo.getText();
-        LocalDate fechaNacimiento =
-                LocalDate.parse(txtFechaNacimiento.getText());
-        controller.agregarCliente(identificacion,nombreCompleto, telefono,fechaNacimiento,correo);
-        showMessage("Cliente agregado correctamente");
-        cargarClientes();
-        clear();
-    } catch (DatosInvalidosException
-            | IdentificacionDuplicadaException ex) {
-        showError(ex.getMessage());
-    } catch (Exception ex) {
-        showError("La fecha ingresada no es válida");
-    }
+            String identificacion = txtIdentificacion.getText();
+            String nombreCompleto = txtNombreCompleto.getText();
+            String telefono = txtTelefono1.getText();
+            String correo = txtCorreo.getText();
+            
+            // Extrayendo la fecha del JDateChooser y convirtiéndola a LocalDate
+            Date fechaSeleccionada = jDateChooser1.getDate();
+            if (fechaSeleccionada == null) {
+                throw new Exception("Debe seleccionar una fecha de nacimiento");
+            }
+            LocalDate fechaNacimiento = fechaSeleccionada.toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
+
+            controller.agregarCliente(identificacion, nombreCompleto, telefono, fechaNacimiento, correo);
+            showMessage("Cliente agregado correctamente");
+            cargarClientes();
+            clear();
+        } catch (DatosInvalidosException | IdentificacionDuplicadaException ex) {
+            showError(ex.getMessage());
+        } catch (Exception ex) {
+            showError(ex.getMessage() != null ? ex.getMessage() : "La fecha ingresada no es válida");
+        }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
          try {
-        String identificacion =
-        txtIdentificacion.getText();
-        String nombreCompleto =
-         txtNombreCompleto.getText();
-        String telefono =
-         txtTelefono1.getText();
-        String correo =
-         txtCorreo.getText();
-        controller.actualizarCliente(identificacion,nombreCompleto,telefono,correo);
-        showMessage("Cliente actualizado correctamente");
-        cargarClientes();
-        clear();
-    } catch (Exception ex) {
-        showError(ex.getMessage());
-    }
+            String identificacion = txtIdentificacion.getText();
+            String nombreCompleto = txtNombreCompleto.getText();
+            String telefono = txtTelefono1.getText();
+            String correo = txtCorreo.getText();
+            
+            controller.actualizarCliente(identificacion, nombreCompleto, telefono, correo);
+            showMessage("Cliente actualizado correctamente");
+            cargarClientes();
+            clear();
+        } catch (Exception ex) {
+            showError(ex.getMessage());
+        }
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         try {
-        String identificacion =
-        txtIdentificacion.getText();
-        controller.eliminarCliente(identificacion);
-        showMessage("Cliente eliminado correctamente");
-        cargarClientes();
-        clear();
-    } catch (ClienteConContratoException ex) {
-        showError(ex.getMessage());
-    } catch (Exception ex) {
-        showError(ex.getMessage());
-    }
+            String identificacion = txtIdentificacion.getText();
+            controller.eliminarCliente(identificacion);
+            showMessage("Cliente eliminado correctamente");
+            cargarClientes();
+            clear();
+        } catch (ClienteConContratoException ex) {
+            showError(ex.getMessage());
+        } catch (Exception ex) {
+            showError(ex.getMessage());
+        }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
@@ -388,32 +385,25 @@ public class FrmCliente extends javax.swing.JFrame
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
          try {
-        String identificacion =
-        txtIdentificacion.getText();
-        Cliente cliente =
-       controller.buscarPorIdentificacion(identificacion);
-        if (cliente == null) {
-            throw new Exception("No existe un cliente con esa identificación");
+            String identificacion = txtIdentificacion.getText();
+            Cliente cliente = controller.buscarPorIdentificacion(identificacion);
+            if (cliente == null) {
+                throw new Exception("No existe un cliente con esa identificación");
+            }
+            showData(cliente);
+        } catch (Exception ex) {
+            showError(ex.getMessage());
         }
-        showData(cliente);
-    } catch (Exception ex) {
-        showError(ex.getMessage());
-    }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
- StorageBoxController controller =
-  new StorageBoxController();
-FrmCliente frmCliente =
- new FrmCliente(controller);
-frmCliente.setVisible(true);
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+        StorageBoxController controller = new StorageBoxController();
+        FrmCliente frmCliente = new FrmCliente(controller);
+        frmCliente.setVisible(true);
+        
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -424,10 +414,6 @@ frmCliente.setVisible(true);
         } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-
-        /* Create and display the form */
-        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -448,10 +434,6 @@ frmCliente.setVisible(true);
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField1;
-<<<<<<< HEAD
-    private javax.swing.JTextField jTextField2;
-=======
->>>>>>> 068e7ff304080170694455ede9d6cd206280a468
     private javax.swing.JTable tblClientes;
     private javax.swing.JTextField txtCorreo;
     private javax.swing.JLabel txtEdad;
