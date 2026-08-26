@@ -12,6 +12,7 @@
 
 # Package Files #
 *.jar
+!src/JCalendarLibrary/**/*.jar
 *.war
 *.nar
 *.ear
