@@ -228,6 +228,7 @@ public void showMessage(String message) {
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         try {
         int codigo =Integer.parseInt(txtCodigo.getText());
+        JOptionPane.showMessageDialog(this,"Código ingresado: " + codigo);
         Servicio servicio =controller.buscarPorCodigo(codigo);
         DefaultTableModel modelo =(DefaultTableModel) tblServicio.getModel();
         modelo.setRowCount(0);
@@ -254,6 +255,7 @@ public void showMessage(String message) {
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         try {
+            
         int fila = tblServicio.getSelectedRow();
         if (fila == -1) {
             throw new Exception("Debe seleccionar un servicio");
