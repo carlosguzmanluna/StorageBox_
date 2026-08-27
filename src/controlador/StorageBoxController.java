@@ -348,7 +348,7 @@ public class StorageBoxController {
                 cliente, espacioAsignado, fechaInicio, fechaFin);
 
         contratos.add(contrato);
-        cliente.agregarContrato(contrato);
+        
 
         return contrato;
     }
