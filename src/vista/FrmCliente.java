@@ -372,6 +372,8 @@ public class FrmCliente extends javax.swing.JFrame  implements FrmView<Cliente> 
             showError(ex.getMessage());
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
+    // TODO add your handling code here:
+    // TODO add your handling code here:
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:

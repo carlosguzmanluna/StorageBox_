@@ -109,6 +109,18 @@ public class StorageBoxController {
     public Empleado buscarEmpleadoPorIdentificacion(String identificacion) {
         return empleados.get(identificacion);
     }
+    public ArrayList<Empleado> buscarEmpleadosPorNombre(String nombre) {
+    ArrayList<Empleado> resultados = new ArrayList<>();
+    ArrayList<Empleado> lista =
+            new ArrayList<>(empleados.values());
+    for (int i = 0; i < lista.size(); i++) {
+        Empleado empleado = lista.get(i);
+        if (empleado.getNombreCompleto().contains(nombre)) {
+            resultados.add(empleado);
+        }
+    }
+    return resultados;
+}
     public void actualizarEmpleado(String identificacion,
             String nombreCompleto, String telefono,
             PuestoEmpleado puesto)

@@ -3,22 +3,69 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package vista;
+import controlador.FrmView;
+import controlador.StorageBoxController;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import modelo.Cliente;
 
 /**
  *
  * @author norki
  */
-public class FrmBuscarCliente extends javax.swing.JFrame {
-    
+
+public class FrmBuscarCliente extends javax.swing.JFrame
+        implements FrmView<Cliente> {
+
+    private StorageBoxController controller;
+    private FrmView<Cliente> view;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrmBuscarCliente.class.getName());
 
     /**
      * Creates new form FrmBuscarCliente
      */
-    public FrmBuscarCliente() {
+    
+    public FrmBuscarCliente(StorageBoxController controller,
+            FrmView<Cliente> view) {
         initComponents();
+        this.controller = controller;
+        this.view = view;
+        cargarClientes();
+    }
+ private void cargarClientes() {
+        DefaultTableModel modelo =
+       (DefaultTableModel) tblClientes.getModel();
+        modelo.setRowCount(0);
+        ArrayList<Cliente> lista =
+        new ArrayList<>(controller.listarClientes());
+        for (int i = 0; i < lista.size(); i++) {
+            Cliente cliente = lista.get(i);
+            modelo.addRow(new Object[]{
+                cliente.getIdentificacion(),
+                cliente.getNombreCompleto(),
+                cliente.getTelefono(),
+                cliente.getFechaNacimiento(),
+                cliente.getCorreoElectronico()
+            });
+        }
+    }
+    @Override
+    public void clear() {
+        txtIdentificacion.setText("");}
+    @Override
+    public void showData(Cliente data) {
     }
 
+    @Override
+    public void showError(String error) {
+        JOptionPane.showMessageDialog(this,error,"Error",JOptionPane.ERROR_MESSAGE);
+    }
+    @Override
+    public void showMessage(String message) {
+        JOptionPane.showMessageDialog(this,message,"StorageBox",JOptionPane.INFORMATION_MESSAGE
+        );
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -36,8 +83,8 @@ public class FrmBuscarCliente extends javax.swing.JFrame {
         btnMostrarTodos = new javax.swing.JButton();
         scrollClientes = new javax.swing.JScrollPane();
         tblClientes = new javax.swing.JTable();
-        btnActualizar = new javax.swing.JButton();
-        btnEliminar = new javax.swing.JButton();
+        btnAceptar = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -48,11 +95,15 @@ public class FrmBuscarCliente extends javax.swing.JFrame {
         lblidentificacion.setFont(new java.awt.Font("Segoe UI Emoji", 1, 14)); // NOI18N
         lblidentificacion.setText("Identificacion");
 
+        txtIdentificacion.addActionListener(this::txtIdentificacionActionPerformed);
+
         btnBuscarCliente.setFont(new java.awt.Font("Segoe UI Emoji", 1, 14)); // NOI18N
         btnBuscarCliente.setText("Buscar");
+        btnBuscarCliente.addActionListener(this::btnBuscarClienteActionPerformed);
 
         btnMostrarTodos.setFont(new java.awt.Font("Segoe UI Emoji", 1, 14)); // NOI18N
         btnMostrarTodos.setText("Mostrar todos");
+        btnMostrarTodos.addActionListener(this::btnMostrarTodosActionPerformed);
 
         tblClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -67,11 +118,13 @@ public class FrmBuscarCliente extends javax.swing.JFrame {
         ));
         scrollClientes.setViewportView(tblClientes);
 
-        btnActualizar.setFont(new java.awt.Font("Segoe UI Emoji", 1, 14)); // NOI18N
-        btnActualizar.setText("Actualizar");
+        btnAceptar.setFont(new java.awt.Font("Segoe UI Emoji", 1, 14)); // NOI18N
+        btnAceptar.setText("Aceptar ");
+        btnAceptar.addActionListener(this::btnAceptarActionPerformed);
 
-        btnEliminar.setFont(new java.awt.Font("Segoe UI Emoji", 1, 14)); // NOI18N
-        btnEliminar.setText("Eliminar");
+        btnCancelar.setFont(new java.awt.Font("Segoe UI Emoji", 1, 14)); // NOI18N
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(this::btnCancelarActionPerformed);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -80,17 +133,16 @@ public class FrmBuscarCliente extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(scrollClientes, javax.swing.GroupLayout.DEFAULT_SIZE, 693, Short.MAX_VALUE)
-                        .addContainerGap())
+                    .addComponent(scrollClientes, javax.swing.GroupLayout.DEFAULT_SIZE, 693, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(lblidentificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtIdentificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(btnMostrarTodos)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -98,9 +150,9 @@ public class FrmBuscarCliente extends javax.swing.JFrame {
                         .addComponent(btnBuscarCliente))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(226, 226, 226)
-                        .addComponent(btnActualizar)
+                        .addComponent(btnAceptar)
                         .addGap(51, 51, 51)
-                        .addComponent(btnEliminar))
+                        .addComponent(btnCancelar))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(240, 240, 240)
                         .addComponent(lblBuscarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -123,8 +175,8 @@ public class FrmBuscarCliente extends javax.swing.JFrame {
                 .addComponent(scrollClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnActualizar)
-                    .addComponent(btnEliminar))
+                    .addComponent(btnAceptar)
+                    .addComponent(btnCancelar))
                 .addContainerGap(25, Short.MAX_VALUE))
         );
 
@@ -142,35 +194,82 @@ public class FrmBuscarCliente extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void txtIdentificacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdentificacionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtIdentificacionActionPerformed
+
+    private void btnBuscarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarClienteActionPerformed
+       try {
+        String identificacion =
+        txtIdentificacion.getText();
+        Cliente cliente =
+       controller.buscarPorIdentificacion(identificacion);
+        if (cliente == null) {
+            throw new Exception("No existe un cliente con esa identificación");
+        }
+        DefaultTableModel modelo =(DefaultTableModel) tblClientes.getModel();
+        modelo.setRowCount(0);
+        modelo.addRow(new Object[]{
+            cliente.getIdentificacion(),
+            cliente.getNombreCompleto(),
+            cliente.getTelefono(),
+            cliente.getFechaNacimiento(),
+            cliente.getCorreoElectronico()
+        });
+    } catch (Exception ex) {
+        showError(ex.getMessage());
+    }
+    }//GEN-LAST:event_btnBuscarClienteActionPerformed
+
+    private void btnMostrarTodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarTodosActionPerformed
+
+    try {
+        cargarClientes();
+    } catch (Exception ex) {
+        showError(ex.getMessage());
+    }
+    }//GEN-LAST:event_btnMostrarTodosActionPerformed
+
+    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
+    try {
+        int fila = tblClientes.getSelectedRow();
+        if (fila == -1) {
+            throw new Exception("Debe seleccionar un cliente");
+        }
+        String identificacion =
+                tblClientes.getValueAt(fila, 0).toString();
+        Cliente cliente =controller.buscarPorIdentificacion(identificacion);
+        if (cliente == null) {
+            throw new Exception("No se pudo obtener el cliente seleccionado");
+        }
+        view.showData(cliente);
+        setVisible(false);
+    } catch (Exception ex) {
+        showError(ex.getMessage());
+    }
+    }//GEN-LAST:event_btnAceptarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+       setVisible(false);
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new FrmBuscarCliente().setVisible(true));
-    }
+    StorageBoxController controller =
+            new StorageBoxController();
 
+    FrmBuscarCliente frmBuscarCliente =
+            new FrmBuscarCliente(controller, null);
+
+    frmBuscarCliente.setVisible(true);
+}
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnActualizar;
+    private javax.swing.JButton btnAceptar;
     private javax.swing.JButton btnBuscarCliente;
-    private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnMostrarTodos;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblBuscarCliente;
