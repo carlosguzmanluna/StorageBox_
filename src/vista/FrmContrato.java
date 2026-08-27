@@ -56,7 +56,7 @@ private void configurarTablaServicios() {
         lblNumeroContrato = new javax.swing.JLabel();
         lblEstado = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        lblEstadoValor = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         lblIdentificacion = new javax.swing.JLabel();
@@ -95,10 +95,11 @@ private void configurarTablaServicios() {
         btnActivar = new javax.swing.JButton();
         btnFinalizar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
+        btnBuscarContrato = new javax.swing.JButton();
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Georgia", 0, 18)); // NOI18N
         jLabel1.setText("Contrato");
@@ -129,8 +130,8 @@ private void configurarTablaServicios() {
         jLabel2.setFont(new java.awt.Font("Georgia", 0, 14)); // NOI18N
         jLabel2.setText("Automatico");
 
-        jLabel3.setFont(new java.awt.Font("Georgia", 0, 14)); // NOI18N
-        jLabel3.setText("Pendiente");
+        lblEstadoValor.setFont(new java.awt.Font("Georgia", 0, 14)); // NOI18N
+        lblEstadoValor.setText("Pendiente");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -144,7 +145,7 @@ private void configurarTablaServicios() {
                 .addGap(42, 42, 42)
                 .addComponent(lblEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel3)
+                .addComponent(lblEstadoValor)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -155,7 +156,7 @@ private void configurarTablaServicios() {
                     .addComponent(lblNumeroContrato)
                     .addComponent(jLabel2)
                     .addComponent(lblEstado)
-                    .addComponent(jLabel3))
+                    .addComponent(lblEstadoValor))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
 
@@ -216,6 +217,7 @@ private void configurarTablaServicios() {
         lblTipo.setText("Tipo");
 
         cmbTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pequeño", "Mediano", "Grande" }));
+        cmbTipo.addActionListener(this::cmbTipoActionPerformed);
 
         lblDiponibles.setFont(new java.awt.Font("Georgia", 0, 14)); // NOI18N
         lblDiponibles.setText("Disponibles");
@@ -320,6 +322,7 @@ private void configurarTablaServicios() {
         btnAgregarServicio.addActionListener(this::btnAgregarServicioActionPerformed);
 
         btnQuitarServicio.setText("Quitar");
+        btnQuitarServicio.addActionListener(this::btnQuitarServicioActionPerformed);
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -395,12 +398,19 @@ private void configurarTablaServicios() {
         );
 
         btnCrearContrato.setText("Crear Contrato");
+        btnCrearContrato.addActionListener(this::btnCrearContratoActionPerformed);
 
         btnActivar.setText("Activar");
+        btnActivar.addActionListener(this::btnActivarActionPerformed);
 
         btnFinalizar.setText("Finalizar");
+        btnFinalizar.addActionListener(this::btnFinalizarActionPerformed);
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(this::btnCancelarActionPerformed);
+
+        btnBuscarContrato.setText("Buscar Contrato");
+        btnBuscarContrato.addActionListener(this::btnBuscarContratoActionPerformed);
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -415,7 +425,9 @@ private void configurarTablaServicios() {
                 .addComponent(btnFinalizar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnCancelar)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnBuscarContrato)
+                .addContainerGap(59, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -425,7 +437,8 @@ private void configurarTablaServicios() {
                     .addComponent(btnCrearContrato)
                     .addComponent(btnActivar)
                     .addComponent(btnFinalizar)
-                    .addComponent(btnCancelar))
+                    .addComponent(btnCancelar)
+                    .addComponent(btnBuscarContrato))
                 .addContainerGap(71, Short.MAX_VALUE))
         );
 
@@ -502,8 +515,158 @@ private void configurarTablaServicios() {
     }//GEN-LAST:event_btnValidarClienteActionPerformed
 
     private void btnAgregarServicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarServicioActionPerformed
-    
+                                                  
+   if (clienteSeleccionado == null) {
+        JOptionPane.showMessageDialog(this, "Debe validar un cliente primero.");
+        return;
+    }
+
+    if (contratoActual != null) {
+        JOptionPane.showMessageDialog(this, "No se pueden agregar servicios a un contrato ya procesado.");
+        return;
+    }
+
+    String textoCodigo = JOptionPane.showInputDialog(this, "Ingrese el codigo del servicio:");
+
+    if (textoCodigo == null || textoCodigo.trim().isEmpty()) {
+        return;
+    }
+
+    int codigo = Integer.parseInt(textoCodigo.trim());
+    Servicio servicio = storageBoxController.buscarPorCodigo(codigo);
+
+    if (servicio == null) {
+        JOptionPane.showMessageDialog(this, "No existe un servicio con ese codigo");
+        return;
+    }
+
+    for (Servicio s : serviciosTemporales) {
+        if (s.getCodigo() == servicio.getCodigo()) {
+            JOptionPane.showMessageDialog(this, "El servicio ya esta agregado.");
+            return;
+        }
+    }
+
+    serviciosTemporales.add(servicio);
+
+    DefaultTableModel modelo = (DefaultTableModel) tblServicioContrato.getModel();
+    Object[] fila = {servicio.getCodigo(), servicio.getNombre(), servicio.getPrecio()};
+    modelo.addRow(fila);
+
+    recalcularCostos();
     }//GEN-LAST:event_btnAgregarServicioActionPerformed
+
+    private void btnQuitarServicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitarServicioActionPerformed
+ int filaSeleccionada = tblServicioContrato.getSelectedRow();
+
+    if (filaSeleccionada == -1) {
+        JOptionPane.showMessageDialog(this, "Seleccione un servicio de la tabla");
+        return;
+    }
+
+    if (contratoActual != null) {
+        JOptionPane.showMessageDialog(this, "No se puede quitar un servicio despues de creado el contrato");
+        return;
+    }
+
+    serviciosTemporales.remove(filaSeleccionada);
+    DefaultTableModel modelo = (DefaultTableModel) tblServicioContrato.getModel();
+    modelo.removeRow(filaSeleccionada);
+    }//GEN-LAST:event_btnQuitarServicioActionPerformed
+
+    private void btnCrearContratoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearContratoActionPerformed
+        if (clienteSeleccionado == null) {
+        JOptionPane.showMessageDialog(this, "Debe validar un cliente antes de crear el contrato.");
+        return;
+    }
+        if (clienteSeleccionado == null) {
+        JOptionPane.showMessageDialog(this, "Valide el cliente primero");
+        return;
+    }
+
+    TipoEspacio tipo = obtenerTipoSeleccionado();
+
+    int diaInicio = Integer.parseInt((String) cmbDiaInicio.getSelectedItem());
+    int mesInicio = obtenerNumeroMes((String) cmbMesInicio.getSelectedItem());
+    int anioInicio = Integer.parseInt((String) cmbAnoInicio.getSelectedItem());
+    LocalDate fechaInicio = LocalDate.of(anioInicio, mesInicio, diaInicio);
+
+    int diaFin = Integer.parseInt((String) cmbDiaFin.getSelectedItem());
+    int mesFin = obtenerNumeroMes((String) cmbMesInicio1.getSelectedItem());
+    int anioFin = Integer.parseInt((String) cmbAnoFin.getSelectedItem());
+    LocalDate fechaFin = LocalDate.of(anioFin, mesFin, diaFin);
+
+    ArrayList<Espacio> disponibles = storageBoxController.buscarEspaciosDisponibles(tipo, fechaInicio, fechaFin);
+    lblDiponibles.setText(String.valueOf(disponibles.size()));
+
+    try {
+        contratoActual = storageBoxController.crearContrato(
+                clienteSeleccionado.getIdentificacion(), tipo, fechaInicio, fechaFin);
+
+        for (int i = 0; i < serviciosTemporales.size(); i++) {
+            contratoActual.agregarServicio(serviciosTemporales.get(i));
+        }
+
+        actualizarDatosContrato();
+        btnCrearContrato.setEnabled(false);
+
+    } catch (DatosInvalidosException | FechaContratoException e) {
+        JOptionPane.showMessageDialog(this, e.getMessage());
+    }
+    }//GEN-LAST:event_btnCrearContratoActionPerformed
+
+    private void btnActivarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActivarActionPerformed
+         if (contratoActual == null) {
+        JOptionPane.showMessageDialog(this, "Primero debe crear el contrato");
+        return;
+    }
+    try {
+        contratoActual.activar();
+        actualizarDatosContrato();
+    } catch (EstadoNoPermitidoException e) {
+        JOptionPane.showMessageDialog(this, e.getMessage());
+    }
+    }//GEN-LAST:event_btnActivarActionPerformed
+
+    private void btnFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarActionPerformed
+     if (contratoActual == null) {
+        JOptionPane.showMessageDialog(this, "Primero debe crear el contrato");
+        return;
+    }
+    try {
+        contratoActual.finalizar();
+        actualizarDatosContrato();
+    } catch (EstadoNoPermitidoException e) {
+        JOptionPane.showMessageDialog(this, e.getMessage());
+    }
+        this.contratoActual = null;
+this.clienteSeleccionado = null;
+this.serviciosTemporales.clear();
+btnCrearContrato.setEnabled(true);
+    }//GEN-LAST:event_btnFinalizarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+         if (contratoActual == null) {
+        JOptionPane.showMessageDialog(this, "Primero debe crear el contrato");
+        return;
+    }
+    try {
+        contratoActual.cancelar();
+        actualizarDatosContrato();
+    } catch (EstadoNoPermitidoException e) {
+        JOptionPane.showMessageDialog(this, e.getMessage());
+    }
+
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void cmbTipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbTipoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbTipoActionPerformed
+
+    private void btnBuscarContratoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarContratoActionPerformed
+     FrmBuscarContrato frmBuscar = new FrmBuscarContrato(this.storageBoxController, this);
+    frmBuscar.setVisible(true);
+    }//GEN-LAST:event_btnBuscarContratoActionPerformed
 
     private int obtenerNumeroMes(String nombreMes) {
         if (nombreMes.equals("Enero")) return 1;
@@ -527,6 +690,7 @@ private void configurarTablaServicios() {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActivar;
     private javax.swing.JButton btnAgregarServicio;
+    private javax.swing.JButton btnBuscarContrato;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnCrearContrato;
     private javax.swing.JButton btnFinalizar;
@@ -542,7 +706,6 @@ private void configurarTablaServicios() {
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -559,6 +722,7 @@ private void configurarTablaServicios() {
     private javax.swing.JLabel lblEspacio;
     private javax.swing.JLabel lblEspacioAsignado;
     private javax.swing.JLabel lblEstado;
+    private javax.swing.JLabel lblEstadoValor;
     private javax.swing.JLabel lblFin;
     private javax.swing.JLabel lblIdentificacion;
     private javax.swing.JLabel lblInicio;
@@ -572,4 +736,51 @@ private void configurarTablaServicios() {
     private javax.swing.JTextField txtIdentificacion;
     private javax.swing.JTextField txtNombreCliente;
     // End of variables declaration//GEN-END:variables
+private void recalcularCostos() {
+        double costoEspacio = 0.0;
+        double costoServicios = 0.0;
+
+        if (contratoActual != null) {
+            costoEspacio = contratoActual.calcularCostoEspacio();
+            costoServicios = contratoActual.calcularCostoServicios();
+        } else if (serviciosTemporales != null) {
+            for (int i = 0; i < serviciosTemporales.size(); i++) {
+                costoServicios += serviciosTemporales.get(i).getPrecio();
+            }
+        }
+
+        double subtotal = costoEspacio + costoServicios;
+        double total = subtotal; 
+
+        lblEspacio.setText("Espacio: ₡" + costoEspacio);
+        lblServicio.setText("Servicio: ₡" + costoServicios);
+        lblSubtotal.setText("Subtotal: ₡" + subtotal);
+        lblTotal.setText("Total: ₡" + total);
+    }
+private void actualizarDatosContrato() {
+    if (contratoActual != null) {
+        lblNumeroContrato.setText("N° " + contratoActual.getNumero());
+        lblEstadoValor.setText(String.valueOf(contratoActual.getEstado()));
+        if (contratoActual.getEspacio() != null) {
+            lblEspacioAsignado.setText("Espacio " + contratoActual.getEspacio().getNumero());
+        }
+        recalcularCostos();
+    }
+}
+
+private TipoEspacio obtenerTipoSeleccionado() {
+    String seleccionado = cmbTipo.getSelectedItem().toString();
+    if (seleccionado.equalsIgnoreCase("Mediano")) {
+        return TipoEspacio.MEDIANO;
+    }
+    if (seleccionado.equalsIgnoreCase("Grande")) {
+        return TipoEspacio.GRANDE;
+    }
+    return TipoEspacio.PEQUENO;
+}
+public void cargarContrato(Contrato contrato) {
+    this.contratoActual = contrato;
+    actualizarDatosContrato();
+}
+
 }

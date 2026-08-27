@@ -13,12 +13,15 @@ public class FrmBuscarContrato extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrmBuscarContrato.class.getName());
 
 private StorageBoxController storageBoxController;
+private FrmContrato vistaContrato;
 private Contrato contratoSeleccionado;
 private List<Contrato> listaContratos;
 
-public FrmBuscarContrato(StorageBoxController storageBoxController) {
+public FrmBuscarContrato(StorageBoxController storageBoxController, FrmContrato vistaContrato) {
     initComponents();
     this.storageBoxController = storageBoxController;
+    this.vistaContrato = vistaContrato;
+
 }
 
 public Contrato getContratoSeleccionado() {
@@ -78,7 +81,7 @@ public Contrato getContratoSeleccionado() {
                 {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Numero", "Cliente", "Fecha Inicio", "Fecha fin", "Espacio", "Estado", "Total"
+                "Codigo", "Cedula", "Fecha Inicio", "Fecha fin", "Espacio", "Estado", "Total"
             }
         ));
         jScrollPane2.setViewportView(tblContratos);
@@ -164,9 +167,10 @@ public Contrato getContratoSeleccionado() {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-    String textoNumero = txtNumero.getText().trim();
+   String textoNumero = txtNumero.getText().trim();
     String textoCliente = txtCliente.getText().trim();
     String textoEspacio = txtEspacio.getText().trim();
+    String textoFecha = txtFecha.getText().trim(); 
     String estadoSeleccionado = (String) cboEstado.getSelectedItem();
 
     List<Contrato> todos = storageBoxController.listarContratos();
@@ -177,8 +181,11 @@ public Contrato getContratoSeleccionado() {
 
         boolean coincideNumero = true;
         if (!textoNumero.isEmpty()) {
-            int numeroBuscado = Integer.parseInt(textoNumero);
-            if (c.getNumero() != numeroBuscado) {
+            try {
+                if (c.getNumero() != Integer.parseInt(textoNumero)) {
+                    coincideNumero = false;
+                }
+            } catch (NumberFormatException e) {
                 coincideNumero = false;
             }
         }
@@ -193,8 +200,11 @@ public Contrato getContratoSeleccionado() {
 
         boolean coincideEspacio = true;
         if (!textoEspacio.isEmpty()) {
-            int numeroEspacioBuscado = Integer.parseInt(textoEspacio);
-            if (c.getEspacio().getNumero() != numeroEspacioBuscado) {
+            try {
+                if (c.getEspacio().getNumero() != Integer.parseInt(textoEspacio)) {
+                    coincideEspacio = false;
+                }
+            } catch (NumberFormatException e) {
                 coincideEspacio = false;
             }
         }
@@ -207,7 +217,19 @@ public Contrato getContratoSeleccionado() {
             }
         }
 
-        if (coincideNumero && coincideCliente && coincideEspacio && coincideEstado) {
+       
+        boolean coincideFecha = true;
+        if (!textoFecha.isEmpty()) {
+            String fInicio = c.getFechaInicio() != null ? c.getFechaInicio().toString() : "";
+            String fFin = c.getFechaFin() != null ? c.getFechaFin().toString() : "";
+            
+        
+            if (!fInicio.contains(textoFecha) && !fFin.contains(textoFecha)) {
+                coincideFecha = false;
+            }
+        }
+
+        if (coincideNumero && coincideCliente && coincideEspacio && coincideEstado && coincideFecha) {
             listaContratos.add(c);
         }
     }
@@ -245,6 +267,12 @@ public Contrato getContratoSeleccionado() {
     }
 
     contratoSeleccionado = listaContratos.get(filaSeleccionada);
+    
+    // Le envía el contrato seleccionado a FrmContrato y la actualiza
+    if (vistaContrato != null) {
+        vistaContrato.cargarContrato(contratoSeleccionado); // o el método con el que lo muestras en FrmContrato
+    }
+    
     dispose();
     }//GEN-LAST:event_btnAceptarActionPerformed
 

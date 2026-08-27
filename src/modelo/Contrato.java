@@ -79,11 +79,10 @@ public class Contrato {
         return new ArrayList<>(servicios);
     }
 
-    public void agregarServicio(Servicio servicio) throws DatosInvalidosException {
-        if (servicio == null) {
-            throw new DatosInvalidosException("El servicio no puede ser nulo");
+   public void agregarServicio(Servicio servicio) {
+        if (servicio != null) {
+            servicios.add(servicio);
         }
-        servicios.add(servicio);
     }
 
     private boolean esBisiesto(int anio) {
@@ -197,4 +196,5 @@ public class Contrato {
     public String toString() {
         return "Contrato " + numero;
     }
+    
 }
