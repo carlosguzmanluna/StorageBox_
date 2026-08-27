@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package controlador;
 import excepciones.ClienteConContratoException;
 import excepciones.DatosInvalidosException;
@@ -228,6 +224,15 @@ public class StorageBoxController {
         }
         return disponibles;
     }
+        public Espacio obtenerPrimerEspacioDisponible(TipoEspacio tipo,
+            LocalDate fechaInicio, LocalDate fechaFin) {
+        ArrayList<Espacio> disponibles =
+                buscarEspaciosDisponibles(tipo, fechaInicio, fechaFin);
+        if (disponibles.isEmpty()) {
+            return null;
+        }
+        return disponibles.get(0);
+    }
 
     public ArrayList<Espacio> listarEspacios() {
         return espacios;
@@ -295,6 +300,10 @@ public class StorageBoxController {
         }
 
         return resultado;
+        
+    }
+        public int contarEspaciosDisponiblesPorTipo(TipoEspacio tipo) {
+        return buscarDisponiblesPorTipo(tipo).size();
     }
 
     private boolean existeConflictoDeFechas(

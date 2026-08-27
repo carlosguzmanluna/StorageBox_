@@ -166,7 +166,7 @@ public Contrato getContratoSeleccionado() {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {                                          
    String textoNumero = txtNumero.getText().trim();
     String textoCliente = txtCliente.getText().trim();
     String textoEspacio = txtEspacio.getText().trim();
@@ -250,15 +250,15 @@ public Contrato getContratoSeleccionado() {
         };
         modelo.addRow(fila);
     }
-    }//GEN-LAST:event_btnBuscarActionPerformed
+    }                                         
 
-    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {                                            
         contratoSeleccionado = null;
     dispose();
 
-    }//GEN-LAST:event_btnCancelarActionPerformed
+    }                                           
 
-    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
+    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {                                           
        int filaSeleccionada = tblContratos.getSelectedRow();
 
     if (filaSeleccionada == -1) {
@@ -267,22 +267,20 @@ public Contrato getContratoSeleccionado() {
     }
 
     contratoSeleccionado = listaContratos.get(filaSeleccionada);
-    
-    // Le envía el contrato seleccionado a FrmContrato y la actualiza
     if (vistaContrato != null) {
-        vistaContrato.cargarContrato(contratoSeleccionado); // o el método con el que lo muestras en FrmContrato
+        vistaContrato.cargarContrato(contratoSeleccionado); 
     }
     
     dispose();
-    }//GEN-LAST:event_btnAceptarActionPerformed
+    }                                          
 
-    private void txtNumeroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNumeroActionPerformed
+    private void txtNumeroActionPerformed(java.awt.event.ActionEvent evt) {                                          
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtNumeroActionPerformed
+    }                                         
 
-    private void txtFechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFechaActionPerformed
+    private void txtFechaActionPerformed(java.awt.event.ActionEvent evt) {                                         
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtFechaActionPerformed
+    }                                        
 
     /**
      * @param args the command line arguments
@@ -306,7 +304,7 @@ public Contrato getContratoSeleccionado() {
         //</editor-fold>
 
         /* Create and display the form */
-  
+        java.awt.EventQueue.invokeLater(() -> new FrmBuscarContrato(null, null).setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
