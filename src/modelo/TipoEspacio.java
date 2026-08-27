@@ -5,7 +5,7 @@ public enum TipoEspacio {
     MEDIANO(10, 45000),
     GRANDE(20, 70000);
 
-    private final double metrosCuadrados;   // 
+    private final double metrosCuadrados;    
     private final double precioMensual;    
 
     TipoEspacio(double metrosCuadrados, double precioMensual) {

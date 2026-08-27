@@ -232,13 +232,12 @@ public class StorageBoxController {
     public ArrayList<Espacio> listarEspacios() {
         return espacios;
     }
-    public void agregarServicio(String nombre, String descripcion,
-            double precio)
-            throws DatosInvalidosException {
-
-        Servicio servicio = new Servicio(nombre, descripcion, precio);
-        servicios.add(servicio);
-    }
+   public Servicio agregarServicio(String nombre, String descripcion,
+        double precio) throws DatosInvalidosException {
+    Servicio servicio = new Servicio(nombre, descripcion, precio);
+    servicios.add(servicio);
+    return servicio;
+}
 
     public Servicio buscarPorCodigo(int codigo) {
         for (int i = 0; i < servicios.size(); i++) {
