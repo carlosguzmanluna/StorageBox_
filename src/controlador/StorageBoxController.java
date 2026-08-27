@@ -395,5 +395,6 @@ public class StorageBoxController {
     public List<Contrato> listarContratos() {
         return new ArrayList<>(contratos);
     }
+    
 }
 
