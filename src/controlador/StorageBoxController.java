@@ -121,6 +121,18 @@ public class StorageBoxController {
     }
     return resultados;
 }
+    public double obtenerSalario(String puesto) {
+        return switch (puesto) {
+            case "Administrador" -> PuestoEmpleado.Administrador.getSalario();
+            case "Recepcionista" -> PuestoEmpleado.Recepcionista.getSalario();
+            case "EncargadoBodega" -> PuestoEmpleado.EncargadoBodega.getSalario();
+            case "Mantenimiento" -> PuestoEmpleado.Mantenimiento.getSalario();
+            default -> PuestoEmpleado.OperarioCarga.getSalario();
+        };
+}
+    public PuestoEmpleado obtenerPuesto(String puesto) {
+    return PuestoEmpleado.valueOf(puesto);
+}
     public void actualizarEmpleado(String identificacion,
             String nombreCompleto, String telefono,
             PuestoEmpleado puesto)
@@ -220,13 +232,12 @@ public class StorageBoxController {
     public ArrayList<Espacio> listarEspacios() {
         return espacios;
     }
-    public void agregarServicio(String nombre, String descripcion,
-            double precio)
-            throws DatosInvalidosException {
-
-        Servicio servicio = new Servicio(nombre, descripcion, precio);
-        servicios.add(servicio);
-    }
+   public Servicio agregarServicio(String nombre, String descripcion,
+        double precio) throws DatosInvalidosException {
+    Servicio servicio = new Servicio(nombre, descripcion, precio);
+    servicios.add(servicio);
+    return servicio;
+}
 
     public Servicio buscarPorCodigo(int codigo) {
         for (int i = 0; i < servicios.size(); i++) {

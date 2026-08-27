@@ -3,21 +3,68 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package vista;
-
+import controlador.FrmView;
+import controlador.StorageBoxController;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import modelo.Servicio;
 /**
  *
  * @author norki
  */
-public class FrmBuscarServicio extends javax.swing.JFrame {
+public class FrmBuscarServicio extends javax.swing.JFrame 
+    implements FrmView<Servicio> {
+    
+     private StorageBoxController controller;
+    private FrmView<Servicio> view;
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrmBuscarServicio.class.getName());
 
     /**
      * Creates new form FrmBuscarServicio
+     * @param controller
+     * @param view
      */
-    public FrmBuscarServicio() {
+    public FrmBuscarServicio(StorageBoxController controller,
+            FrmView<Servicio> view) {
         initComponents();
+        this.controller = controller;
+        this.view = view;
+        cargarServicios();
     }
+    private void cargarServicios() {
+    DefaultTableModel modelo =(DefaultTableModel) tblServicio.getModel();
+    modelo.setRowCount(0);
+    ArrayList<Servicio> lista =new ArrayList<>(controller.listarServicios());
+    for (int i = 0; i < lista.size(); i++) {
+        Servicio servicio = lista.get(i);
+        modelo.addRow(new Object[]{
+            servicio.getCodigo(),
+            servicio.getNombre(),
+            servicio.getDescripcion(),
+            servicio.getPrecio()
+        });
+    }
+}
+@Override
+public void clear() {
+    txtCodigo.setText("");
+}
+@Override
+public void showData(Servicio data) {
+}
+@Override
+public void showError(String error) {
+    JOptionPane.showMessageDialog(this,error,"Error",JOptionPane.ERROR_MESSAGE
+    );
+}
+
+@Override
+public void showMessage(String message) {
+    JOptionPane.showMessageDialog(this, message,"StorageBox",JOptionPane.INFORMATION_MESSAGE
+    );
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -40,7 +87,7 @@ public class FrmBuscarServicio extends javax.swing.JFrame {
         btnAceptar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -69,11 +116,15 @@ public class FrmBuscarServicio extends javax.swing.JFrame {
         lblCodigo.setFont(new java.awt.Font("Segoe UI Emoji", 1, 14)); // NOI18N
         lblCodigo.setText("Codigo");
 
+        txtCodigo.addActionListener(this::txtCodigoActionPerformed);
+
         btnBuscar.setFont(new java.awt.Font("Segoe UI Emoji", 1, 12)); // NOI18N
         btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(this::btnBuscarActionPerformed);
 
         BtnMostrar.setFont(new java.awt.Font("Segoe UI Emoji", 1, 12)); // NOI18N
         BtnMostrar.setText("Mostrar todos");
+        BtnMostrar.addActionListener(this::BtnMostrarActionPerformed);
 
         tblServicio.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         tblServicio.setFont(new java.awt.Font("Segoe UI Light", 1, 12)); // NOI18N
@@ -92,9 +143,11 @@ public class FrmBuscarServicio extends javax.swing.JFrame {
 
         btnAceptar.setFont(new java.awt.Font("Segoe UI Emoji", 1, 12)); // NOI18N
         btnAceptar.setText("Aceptar");
+        btnAceptar.addActionListener(this::btnAceptarActionPerformed);
 
         btnCancelar.setFont(new java.awt.Font("Segoe UI Emoji", 1, 12)); // NOI18N
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(this::btnCancelarActionPerformed);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -168,31 +221,69 @@ public class FrmBuscarServicio extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void txtCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCodigoActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        try {
+        int codigo =Integer.parseInt(txtCodigo.getText());
+        Servicio servicio =controller.buscarPorCodigo(codigo);
+        DefaultTableModel modelo =(DefaultTableModel) tblServicio.getModel();
+        modelo.setRowCount(0);
+        if (servicio != null) {
+           modelo.addRow(new Object[]{
+                servicio.getCodigo(),
+                servicio.getNombre(),
+                servicio.getDescripcion(),
+                servicio.getPrecio()
+            });
+
+        } else {
+            showMessage("No existe un servicio con ese código");
+        }
+    } catch (NumberFormatException ex) {
+
+        showError("El código debe ser un número");
+    }
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void BtnMostrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnMostrarActionPerformed
+        cargarServicios();
+    }//GEN-LAST:event_BtnMostrarActionPerformed
+
+    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
+        try {
+        int fila = tblServicio.getSelectedRow();
+        if (fila == -1) {
+            throw new Exception("Debe seleccionar un servicio");
+        }
+        int codigo =Integer.parseInt(tblServicio.getValueAt(fila, 0).toString());
+        Servicio servicio =controller.buscarPorCodigo(codigo);
+        if (servicio == null) {
+            throw new Exception("No se pudo obtener el servicio");
+        }
+        view.showData(servicio);
+        setVisible(false);
+    } catch (Exception ex) {
+        showError(ex.getMessage());
+    }
+    }//GEN-LAST:event_btnAceptarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+           setVisible(false);
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new FrmBuscarServicio().setVisible(true));
+         StorageBoxController controller =
+            new StorageBoxController();
+    FrmBuscarServicio buscarServicio =
+            new FrmBuscarServicio(controller, null);
+    buscarServicio.setVisible(true);
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnMostrar;
     private javax.swing.JScrollPane ScrollServicio;
