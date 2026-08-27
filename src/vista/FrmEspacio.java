@@ -4,19 +4,72 @@
  */
 package vista;
 
+import controlador.FrmView;
+import controlador.StorageBoxController;
+import modelo.Espacio;
+import excepciones.DatosInvalidosException;
+import excepciones.EspacioDuplicadoException;
+import excepciones.EspacioOcupadoException;
+import modelo.TipoEspacio;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author norki
  */
-public class FrmEspacio extends javax.swing.JFrame {
+public class FrmEspacio extends javax.swing.JFrame implements FrmView<Espacio>{
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrmEspacio.class.getName());
-
+    private StorageBoxController controller;
     /**
      * Creates new form FrmEspacio
      */
-    public FrmEspacio() {
+    public FrmEspacio(StorageBoxController controller) {
         initComponents();
+        this.controller = controller;
+        cargarEspacios();
+    }
+    private void cargarEspacios() {
+    DefaultTableModel modelo = (DefaultTableModel) tblEspacios.getModel();
+    modelo.setRowCount(0);
+    ArrayList<Espacio> lista = new ArrayList<>(controller.listarEspacios());
+    for (int i = 0; i < lista.size(); i++) {
+        Espacio e = lista.get(i);
+        modelo.addRow(new Object[]{
+            e.getNumero(),
+            e.getTipo(),
+            e.getMetrosCuadrados(),
+            e.getPrecioMensual()  });
+    }
+    
+}
+     @Override
+    public void clear() {
+        txtNumero.setText("");
+        txtMetrosCuadrados.setText("");
+        txtPrecio.setText("");
+        txtEstado.setText("Disponible");
+    }
+
+    @Override
+    public void showData(Espacio data) {
+        txtNumero.setText(String.valueOf(data.getNumero()));
+        txtMetrosCuadrados.setText(String.valueOf(data.getMetrosCuadrados()));
+        txtPrecio.setText(String.valueOf(data.getPrecioMensual()));
+        txtEstado.setText(data.getEstado().toString());
+        txtNumero.setEnabled(false);
+    }
+
+    @Override
+    public void showError(String error) {
+        JOptionPane.showMessageDialog(this, error, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    @Override
+    public void showMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "StorageBox", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /**
@@ -44,6 +97,7 @@ public class FrmEspacio extends javax.swing.JFrame {
         btnEliminar = new javax.swing.JButton();
         btnLimpiar = new javax.swing.JButton();
         cmbEspacio = new javax.swing.JComboBox<>();
+        btnCargar = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         lblLista = new javax.swing.JLabel();
         scrollEspacios = new javax.swing.JScrollPane();
@@ -66,7 +120,6 @@ public class FrmEspacio extends javax.swing.JFrame {
         lblMetrosCuadrados.setFont(new java.awt.Font("Segoe UI Emoji", 1, 14)); // NOI18N
         lblMetrosCuadrados.setText("Metros Cuadrados:");
 
-        txtMetrosCuadrados.setText(" 5 m² ");
         txtMetrosCuadrados.addActionListener(this::txtMetrosCuadradosActionPerformed);
 
         lblPrecio.setFont(new java.awt.Font("Segoe UI Emoji", 1, 14)); // NOI18N
@@ -75,14 +128,15 @@ public class FrmEspacio extends javax.swing.JFrame {
         lblEstado.setFont(new java.awt.Font("Segoe UI Emoji", 1, 14)); // NOI18N
         lblEstado.setText("Estado:");
 
-        txtPrecio.setText("₡25000");
         txtPrecio.addActionListener(this::txtPrecioActionPerformed);
 
+        txtEstado.setEditable(false);
         txtEstado.setText("Disponible");
         txtEstado.addActionListener(this::txtEstadoActionPerformed);
 
         btnAgregar.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
         btnAgregar.setText("Agregar");
+        btnAgregar.addActionListener(this::btnAgregarActionPerformed);
 
         btnActualizar.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
         btnActualizar.setText("Actualizar");
@@ -94,6 +148,12 @@ public class FrmEspacio extends javax.swing.JFrame {
 
         btnLimpiar.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
         btnLimpiar.setText("Limpiar");
+        btnLimpiar.addActionListener(this::btnLimpiarActionPerformed);
+
+        cmbEspacio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pequeño", "Mediano", "Grande" }));
+
+        btnCargar.setText("Cargar Seleccionado");
+        btnCargar.addActionListener(this::btnCargarActionPerformed);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -120,24 +180,27 @@ public class FrmEspacio extends javax.swing.JFrame {
                             .addComponent(cmbEspacio, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(8, 8, 8)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lblPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(lblEstado)
-                                .addComponent(btnAgregar)))
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnCargar)
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(20, 20, 20)
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(47, 47, 47)
-                                .addComponent(btnActualizar)
-                                .addGap(63, 63, 63)
-                                .addComponent(btnEliminar)
-                                .addGap(36, 36, 36)
-                                .addComponent(btnLimpiar)))))
+                                    .addComponent(lblPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(lblEstado)
+                                        .addComponent(btnAgregar)))
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addGap(20, 20, 20)
+                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addGap(47, 47, 47)
+                                        .addComponent(btnActualizar)
+                                        .addGap(63, 63, 63)
+                                        .addComponent(btnEliminar)
+                                        .addGap(36, 36, 36)
+                                        .addComponent(btnLimpiar)))))))
                 .addContainerGap(87, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -163,7 +226,9 @@ public class FrmEspacio extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblEstado)
                     .addComponent(txtEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(40, 40, 40)
+                .addGap(5, 5, 5)
+                .addComponent(btnCargar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAgregar)
                     .addComponent(btnActualizar)
@@ -290,12 +355,83 @@ public class FrmEspacio extends javax.swing.JFrame {
     }//GEN-LAST:event_txtEstadoActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
-        // TODO add your handling code here:
+       try{int numero = Integer.parseInt(txtNumero.getText());
+       TipoEspacio tipo = TipoEspacio.PEQUENO;
+       if (cmbEspacio.getSelectedItem().equals("Mediano")){
+           tipo = TipoEspacio.MEDIANO;
+       }
+       if (cmbEspacio.getSelectedItem().equals("Grande")){
+           tipo = TipoEspacio.GRANDE;
+       }
+       double metros =Double.parseDouble(txtMetrosCuadrados.getText());//esto comvierte el texto metros adrados y 
+       double precio =Double.parseDouble(txtPrecio.getText());// precio mensual a decimal
+       controller.actualizarEspacio(numero, tipo, metros, precio);
+       showMessage("Espacio actualizado");
+       cargarEspacios();
+       clear();
+       
+       }catch(DatosInvalidosException ex){
+           showError(ex.getMessage());
+       }catch(NumberFormatException ex){
+           showError("Verifique que los valores numéricos sean válidos");
+       }
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
+        try{int numero= Integer.parseInt(txtNumero.getText());
+        controller.eliminarEspacio(numero);
+        
+        showMessage("Espacio eliminado");
+        cargarEspacios();
+        clear();
+        
+        }catch(DatosInvalidosException ex){
+            showError(ex.getMessage());
+        }catch(EspacioOcupadoException ex){
+            showError(ex.getMessage());
+        }catch(NumberFormatException ex){
+            showError("Error debe de ser un valor numerico");
+        }
     }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        try {int numero = Integer.parseInt(txtNumero.getText());
+        TipoEspacio tipo = TipoEspacio.PEQUENO;
+        if (cmbEspacio.getSelectedItem().equals("Mediano")) {
+        tipo = TipoEspacio.MEDIANO;}
+        if (cmbEspacio.getSelectedItem().equals("Grande")) {
+        tipo = TipoEspacio.GRANDE;
+        } 
+        Espacio espacio = new Espacio(numero, tipo);
+        controller.agregarEspacio(espacio);
+        showMessage("Espacio agregado correctamente");
+        cargarEspacios();
+        clear(); 
+        
+        
+        }catch(DatosInvalidosException | EspacioDuplicadoException ex){
+            showError(ex.getMessage());
+        }catch(NumberFormatException ex){
+            showError("El número debe ser un valor numerico");
+        }
+    }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+       clear();
+    }//GEN-LAST:event_btnLimpiarActionPerformed
+
+    private void btnCargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarActionPerformed
+       int fila = tblEspacios.getSelectedRow();
+       if (fila >= 0) {
+           int numero = (int) tblEspacios.getValueAt(fila, 0);
+           Espacio espacio = controller.buscarPorNumero(numero);
+       if (espacio != null) {
+           showData(espacio);
+       }
+       }else{
+           showError("Seleccione un espacio de la tabla");
+}
+    }//GEN-LAST:event_btnCargarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -318,13 +454,16 @@ public class FrmEspacio extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new FrmEspacio().setVisible(true));
+        /* Create and  -> new FrmEspacio().setVisible(true));display the form */
+      StorageBoxController controller = new StorageBoxController();
+      FrmEspacio frmEspacio = new FrmEspacio(controller);
+      frmEspacio.setVisible(true);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnCargar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnLimpiar;
     private javax.swing.JComboBox<String> cmbEspacio;
