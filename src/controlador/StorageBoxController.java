@@ -395,6 +395,30 @@ public class StorageBoxController {
     public List<Contrato> listarContratos() {
         return new ArrayList<>(contratos);
     }
+    public ArrayList<Espacio> filtrarEspacios(Integer numeroFiltro, TipoEspacio tipoFiltro, EstadoEspacio estadoFiltro, Double precioDesde, Double precioHasta) {
+    ArrayList<Espacio> resultados = new ArrayList<>();
     
+    for (int i = 0; i < espacios.size(); i++) {
+        Espacio esp = espacios.get(i);
+        if (numeroFiltro != null && esp.getNumero() != numeroFiltro) {
+            continue;
+        }
+        if (tipoFiltro != null && esp.getTipo() != tipoFiltro) {
+            continue;
+        }
+        if (estadoFiltro != null && esp.getEstado() != estadoFiltro) {
+            continue;
+        }
+        if (precioDesde != null && esp.getPrecioMensual() < precioDesde) {
+            continue;
+        }
+        if (precioHasta != null && esp.getPrecioMensual() > precioHasta) {
+            continue;
+        }
+        resultados.add(esp);
+    }
+    
+    return resultados;
+    }    
 }
 
