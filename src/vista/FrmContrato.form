@@ -254,6 +254,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Validar"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnValidarClienteActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel5">
           <Properties>
@@ -640,6 +643,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Agregar"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAgregarServicioActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnQuitarServicio">
           <Properties>

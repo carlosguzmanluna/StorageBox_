@@ -3,18 +3,43 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package vista;
-
-/**
- *
- * @author norki
- */
+import controlador.StorageBoxController;
+import modelo.Cliente;
+import modelo.Contrato;
+import modelo.Espacio;
+import modelo.Servicio;
+import modelo.TipoEspacio;
+import excepciones.DatosInvalidosException;
+import excepciones.FechaContratoException;
+import excepciones.EstadoNoPermitidoException;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 public class FrmContrato extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrmContrato.class.getName());
+private StorageBoxController storageBoxController;
+private Cliente clienteSeleccionado;
+private Contrato contratoActual;
+private List<Servicio> serviciosTemporales;
 
-    /**
-     * Creates new form FrmContrato
-     */
+public FrmContrato(StorageBoxController storageBoxController) {
+    initComponents();
+    this.storageBoxController = storageBoxController;
+    this.serviciosTemporales = new ArrayList<>();
+    configurarTablaServicios();
+}
+
+private void configurarTablaServicios() {
+    DefaultTableModel modelo = new DefaultTableModel();
+    modelo.addColumn("Codigo");
+    modelo.addColumn("Servicio");
+    modelo.addColumn("Precio");
+    tblServicioContrato.setModel(modelo);
+}
+   
     public FrmContrato() {
         initComponents();
     }
@@ -145,6 +170,7 @@ public class FrmContrato extends javax.swing.JFrame {
         lblIdentificacion.setText("Identificacion");
 
         btnValidarCliente.setText("Validar");
+        btnValidarCliente.addActionListener(this::btnValidarClienteActionPerformed);
 
         jLabel5.setFont(new java.awt.Font("Georgia", 0, 14)); // NOI18N
         jLabel5.setText("Nombre");
@@ -295,6 +321,7 @@ public class FrmContrato extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tblServicioContrato);
 
         btnAgregarServicio.setText("Agregar");
+        btnAgregarServicio.addActionListener(this::btnAgregarServicioActionPerformed);
 
         btnQuitarServicio.setText("Quitar");
 
@@ -445,9 +472,17 @@ public class FrmContrato extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
+    private void btnValidarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnValidarClienteActionPerformed
+       String identificacion = txtIdentificacion.getText().trim();
+    clienteSeleccionado = storageBoxController.buscarPorIdentificacion(identificacion);
+
+    if (clienteSeleccionado == null) {
+        JOptionPane.showMessageDialog(this, "Cliente no encontrado. Registrelo primero.");
+        txtNombreCliente.setText("");
+    } else {
+        txtNombreCliente.setText(clienteSeleccionado.getNombreCompleto());
+    }
+}
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -468,7 +503,30 @@ public class FrmContrato extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new FrmContrato().setVisible(true));
+    }//GEN-LAST:event_btnValidarClienteActionPerformed
+
+    private void btnAgregarServicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarServicioActionPerformed
+    
+    }//GEN-LAST:event_btnAgregarServicioActionPerformed
+
+    private int obtenerNumeroMes(String nombreMes) {
+        if (nombreMes.equals("Enero")) return 1;
+        if (nombreMes.equals("Febrero")) return 2;
+        if (nombreMes.equals("Marzo")) return 3;
+        if (nombreMes.equals("Abril")) return 4;
+        if (nombreMes.equals("Mayo")) return 5;
+        if (nombreMes.equals("Junio")) return 6;
+        if (nombreMes.equals("Julio")) return 7;
+        if (nombreMes.equals("Agosto")) return 8;
+        if (nombreMes.equals("Septiembre")) return 9;
+        if (nombreMes.equals("Octubre")) return 10;
+        if (nombreMes.equals("Noviembre")) return 11;
+        if (nombreMes.equals("Diciembre")) return 12;
+        return 0;
     }
+    
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActivar;
