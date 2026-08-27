@@ -1,35 +1,4 @@
 package vista;
-<<<<<<< HEAD
-import controlador.EmpleadoController;
-import modelo.Empleado;
-import modelo.PuestoEmpleado;
-import excepciones.DatosInvalidosException;
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
-
-public class FrmEmpleado extends javax.swing.JFrame {
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrmEmpleado.class.getName());
-    private EmpleadoController controlador;
-    public FrmEmpleado() {
-        initComponents();
-        controlador = new EmpleadoController();
-        actualizarTabla();
-    }
-    private void actualizarTabla() {
-        DefaultTableModel modelo = (DefaultTableModel) Empleados_tbl.getModel();
-        modelo.setRowCount(0); 
-        for (Empleado emp : controlador.listarEmpleados()) {
-            Object[] fila = {
-                emp.getIdentificacion(),
-                emp.getNombreCompleto(),
-                emp.getTelefono(),
-                emp.getPuesto() != null ? emp.getPuesto().name() : "",
-                emp.getPuesto() != null ? emp.getPuesto().getSalario() : 0.0
-            };
-            modelo.addRow(fila);
-        }
-    }
-=======
 import controlador.FrmView;
 import controlador.StorageBoxController;
 import excepciones.DatosInvalidosException;
@@ -38,75 +7,63 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelo.Empleado;
 import modelo.PuestoEmpleado;
-/**
- *
- * @author norki
- */
+
 public class FrmEmpleado extends javax.swing.JFrame 
-      implements FrmView<Empleado> {
-     private StorageBoxController controller;
-
+    implements FrmView<Empleado> {
+    private StorageBoxController controller;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrmEmpleado.class.getName());
-
-    /**
-     * Creates new form FrmEmpleado
-     * @param controller
-     */
     public FrmEmpleado(StorageBoxController controller) {
-         this.controller = controller;
-    initComponents();
-    cargarEmpleados();
+        this.controller = controller;
+        initComponents();
+        cargarEmpleados();
     }
+
     private void cargarEmpleados() {
-    DefaultTableModel modelo =
-            (DefaultTableModel) Empleados_tbl.getModel();
-    modelo.setRowCount(0);
-    ArrayList<Empleado> lista =
-    new ArrayList<>(controller.listarEmpleados());
-    for (int i = 0; i < lista.size(); i++) {
-        Empleado empleado = lista.get(i);
-        modelo.addRow(new Object[]{
-            empleado.getIdentificacion(),
-            empleado.getNombreCompleto(),
-            empleado.getTelefono(),
-            empleado.getPuesto(),
-            empleado.getSalario()
-        });
+        DefaultTableModel modelo = (DefaultTableModel) Empleados_tbl.getModel();
+        modelo.setRowCount(0);
+        ArrayList<Empleado> lista = new ArrayList<>(controller.listarEmpleados());
+        for (int i = 0; i < lista.size(); i++) {
+            Empleado empleado = lista.get(i);
+            modelo.addRow(new Object[]{
+                empleado.getIdentificacion(),
+                empleado.getNombreCompleto(),
+                empleado.getTelefono(),
+                empleado.getPuesto() != null ? empleado.getPuesto().name() : "",
+                empleado.getPuesto() != null ? empleado.getPuesto().getSalario() : 0.0
+            });
+        }
     }
-}
-  @Override
-public void clear() {
-    Id_txt.setText("");
-    Nombre_txt.setText("");
-    Telefono_txt.setText("");
-    Puesto_cbx.setSelectedIndex(0);
-    jTextField1.setText("");
-}
 
-@Override
-public void showData(Empleado data) {
-    Id_txt.setText(data.getIdentificacion());
-    Nombre_txt.setText(data.getNombreCompleto());
-    Telefono_txt.setText(data.getTelefono());
-    Puesto_cbx.setSelectedItem(data.getPuesto());
-    jTextField1.setText(String.valueOf(data.getSalario()));
-}
-@Override
-public void showError(String error) {
-    JOptionPane.showMessageDialog(this,error, "Error", JOptionPane.ERROR_MESSAGE);
-}
+    @Override
+    public void clear() {
+        Id_txt.setText("");
+        Nombre_txt.setText("");
+        Telefono_txt.setText("");
+        Puesto_cbx.setSelectedIndex(0);
+        jTextField1.setText("");
+        Id_txt.setEditable(true);
+    }
 
-@Override
-public void showMessage(String message) {
-    JOptionPane.showMessageDialog(this,message,"StorageBox",JOptionPane.INFORMATION_MESSAGE);
-}
+    @Override
+    public void showData(Empleado data) {
+        Id_txt.setText(data.getIdentificacion());
+        Nombre_txt.setText(data.getNombreCompleto());
+        Telefono_txt.setText(data.getTelefono());
+        Puesto_cbx.setSelectedItem(data.getPuesto());
+        jTextField1.setText(String.valueOf(data.getSalario()));
+        Id_txt.setEditable(false);
+    }
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
->>>>>>> 11afa1b66bc860c4bfac42a01f22c2de58ee3a71
+    @Override
+    public void showError(String error) {
+        JOptionPane.showMessageDialog(this, error, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    @Override
+    public void showMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "StorageBox", JOptionPane.INFORMATION_MESSAGE);
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -124,19 +81,11 @@ public void showMessage(String message) {
         Puesto_cbx = new javax.swing.JComboBox<>();
         Salario_lbl = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
-<<<<<<< HEAD
         Agregar_btn = new javax.swing.JButton();
         Actualizar_btn = new javax.swing.JButton();
         Eliminar_btn = new javax.swing.JButton();
         Limpiar_btn = new javax.swing.JButton();
         Buscar_btn = new javax.swing.JButton();
-=======
-        btnBuscar = new javax.swing.JButton();
-        btnAgregar = new javax.swing.JButton();
-        btnEliminar = new javax.swing.JButton();
-        btnLimpiar = new javax.swing.JButton();
-        btnActualizar = new javax.swing.JButton();
->>>>>>> 11afa1b66bc860c4bfac42a01f22c2de58ee3a71
         jMenuBar1 = new javax.swing.JMenuBar();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -183,19 +132,15 @@ public void showMessage(String message) {
         Puesto_lbl.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         Puesto_lbl.setText("Puesto");
 
-<<<<<<< HEAD
         Puesto_cbx.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Elija su puesto :)", "Administrador", "Encargado de Bodega", "Mantenimiento", "Recepcionista", "Operario de Carga" }));
-=======
-        Puesto_cbx.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Administrador", "Recepcionista", "Encargado Bodega", "Mantenimiento", "Operario Carga" }));
->>>>>>> 11afa1b66bc860c4bfac42a01f22c2de58ee3a71
         Puesto_cbx.addActionListener(this::Puesto_cbxActionPerformed);
 
         Salario_lbl.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         Salario_lbl.setText("Salario");
 
+        jTextField1.setEditable(false);
         jTextField1.addActionListener(this::jTextField1ActionPerformed);
 
-<<<<<<< HEAD
         Agregar_btn.setText("Agregar");
         Agregar_btn.addActionListener(this::Agregar_btnActionPerformed);
 
@@ -210,22 +155,6 @@ public void showMessage(String message) {
 
         Buscar_btn.setText("Buscar");
         Buscar_btn.addActionListener(this::Buscar_btnActionPerformed);
-=======
-        btnBuscar.setText("Buscar");
-        btnBuscar.addActionListener(this::btnBuscarActionPerformed);
-
-        btnAgregar.setText("Agregar");
-        btnAgregar.addActionListener(this::btnAgregarActionPerformed);
-
-        btnEliminar.setText("Eliminar");
-        btnEliminar.addActionListener(this::btnEliminarActionPerformed);
-
-        btnLimpiar.setText("Limpiar");
-        btnLimpiar.addActionListener(this::btnLimpiarActionPerformed);
-
-        btnActualizar.setText("Actualizar");
-        btnActualizar.addActionListener(this::btnActualizarActionPerformed);
->>>>>>> 11afa1b66bc860c4bfac42a01f22c2de58ee3a71
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -252,7 +181,6 @@ public void showMessage(String message) {
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(layout.createSequentialGroup()
                                                 .addGap(75, 75, 75)
-<<<<<<< HEAD
                                                 .addComponent(Limpiar_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addGap(31, 31, 31)
                                                 .addComponent(Actualizar_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -263,18 +191,6 @@ public void showMessage(String message) {
                                                 .addComponent(Agregar_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                 .addComponent(Eliminar_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-=======
-                                                .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(31, 31, 31)
-                                                .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGap(33, 33, 33)
-                                                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))))
->>>>>>> 11afa1b66bc860c4bfac42a01f22c2de58ee3a71
                                 .addGap(0, 60, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -313,7 +229,6 @@ public void showMessage(String message) {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Puesto_cbx, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-<<<<<<< HEAD
                     .addComponent(Agregar_btn)
                     .addComponent(Eliminar_btn)
                     .addComponent(Buscar_btn))
@@ -321,15 +236,6 @@ public void showMessage(String message) {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Limpiar_btn)
                     .addComponent(Actualizar_btn))
-=======
-                    .addComponent(btnAgregar)
-                    .addComponent(btnEliminar)
-                    .addComponent(btnBuscar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnLimpiar)
-                    .addComponent(btnActualizar))
->>>>>>> 11afa1b66bc860c4bfac42a01f22c2de58ee3a71
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 373, Short.MAX_VALUE)
                 .addContainerGap())
@@ -338,21 +244,17 @@ public void showMessage(String message) {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void Id_txtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Id_txtActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_Id_txtActionPerformed
+    private void Id_txtActionPerformed(java.awt.event.ActionEvent evt) {
+    }
 
-    private void Nombre_txtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Nombre_txtActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_Nombre_txtActionPerformed
+    private void Nombre_txtActionPerformed(java.awt.event.ActionEvent evt) {
+    }
 
-    private void Telefono_txtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Telefono_txtActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_Telefono_txtActionPerformed
+    private void Telefono_txtActionPerformed(java.awt.event.ActionEvent evt) {
+    }
 
-    private void Puesto_cbxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Puesto_cbxActionPerformed
-<<<<<<< HEAD
-String puestoStr = Puesto_cbx.getSelectedItem().toString();
+    private void Puesto_cbxActionPerformed(java.awt.event.ActionEvent evt) {
+        String puestoStr = Puesto_cbx.getSelectedItem().toString();
         if (puestoStr.startsWith("Elija")) {
             jTextField1.setText("");
             return;
@@ -370,236 +272,124 @@ String puestoStr = Puesto_cbx.getSelectedItem().toString();
             
             if (puestoEnum != null) {
                 jTextField1.setText(String.valueOf(puestoEnum.getSalario()));
-                jTextField1.setEditable(false);
             }
         } catch (Exception e) {
             jTextField1.setText("");
         }
-=======
-      String puesto =
-     Puesto_cbx.getSelectedItem().toString();
-    double salario =controller.obtenerSalario(puesto);
-    jTextField1.setText(String.valueOf(salario));
->>>>>>> 11afa1b66bc860c4bfac42a01f22c2de58ee3a71
-    }//GEN-LAST:event_Puesto_cbxActionPerformed
-
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
-<<<<<<< HEAD
-    private void Agregar_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Agregar_btnActionPerformed
-try {
-        String id = Id_txt.getText().trim();
-        String nombre = Nombre_txt.getText().trim();
-        String telefono = Telefono_txt.getText().trim();
-        int selectedIndex = Puesto_cbx.getSelectedIndex();
-
-        if (id.isEmpty() || nombre.isEmpty() || telefono.isEmpty() || selectedIndex == 0) {
-            JOptionPane.showMessageDialog(this, "Complete todos los campos y seleccione un puesto.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        String puestoStr = Puesto_cbx.getSelectedItem().toString();
-        PuestoEmpleado puestoEnum = switch (puestoStr) {
-            case "Administrador" -> PuestoEmpleado.Administrador;
-            case "Recepcionista" -> PuestoEmpleado.Recepcionista;
-            case "Encargado de Bodega" -> PuestoEmpleado.EncargadoBodega;
-            case "Mantenimiento" -> PuestoEmpleado.Mantenimiento;
-            case "Operario de Carga" -> PuestoEmpleado.OperarioCarga;
-            default -> null;
-        };
-        
-        if (puestoEnum == null) {
-            JOptionPane.showMessageDialog(this, "Debe seleccionar un puesto válido.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        Empleado nuevoEmpleado = new Empleado(id, nombre, telefono, puestoEnum);
-        controlador.agregarEmpleado(nuevoEmpleado);
-        JOptionPane.showMessageDialog(this, "Empleado agregado correctamente.");
-        actualizarTabla();
-        Limpiar_btnActionPerformed(evt);
-
-    } catch (DatosInvalidosException e) {
-        JOptionPane.showMessageDialog(this, e.getMessage(), "Error de validación", JOptionPane.ERROR_MESSAGE);
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Ocurrió un error al agregar: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
-    }//GEN-LAST:event_Agregar_btnActionPerformed
 
-    private void Actualizar_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Actualizar_btnActionPerformed
-try {
-        String id = Id_txt.getText().trim();
-        String nombre = Nombre_txt.getText().trim();
-        String telefono = Telefono_txt.getText().trim();
-        int selectedIndex = Puesto_cbx.getSelectedIndex();
-
-        if (id.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Debe ingresar la identificación del empleado a actualizar.", "Aviso", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        if (selectedIndex == 0) {
-            JOptionPane.showMessageDialog(this, "Debe seleccionar un puesto válido.", "Aviso", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        String puestoStr = Puesto_cbx.getSelectedItem().toString();
-        PuestoEmpleado puestoEnum = switch (puestoStr) {
-            case "Administrador" -> PuestoEmpleado.Administrador;
-            case "Recepcionista" -> PuestoEmpleado.Recepcionista;
-            case "Encargado de Bodega" -> PuestoEmpleado.EncargadoBodega;
-            case "Mantenimiento" -> PuestoEmpleado.Mantenimiento;
-            case "Operario de Carga" -> PuestoEmpleado.OperarioCarga;
-            default -> null;
-        };
-
-        controlador.actualizarEmpleado(id, nombre, telefono, puestoEnum);
-        JOptionPane.showMessageDialog(this, "Empleado actualizado correctamente.");
-        actualizarTabla();
-
-    } catch (DatosInvalidosException e) {
-        JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error al actualizar: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {
     }
-    }//GEN-LAST:event_Actualizar_btnActionPerformed
 
-    private void Eliminar_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Eliminar_btnActionPerformed
-try {
+    private void Agregar_btnActionPerformed(java.awt.event.ActionEvent evt) {
+        try {
             String id = Id_txt.getText().trim();
-            if (id.isEmpty()) {
-                javax.swing.JOptionPane.showMessageDialog(this, "Ingrese la identificación del empleado que desea eliminar.", "Aviso", javax.swing.JOptionPane.WARNING_MESSAGE);
+            String nombre = Nombre_txt.getText().trim();
+            String telefono = Telefono_txt.getText().trim();
+            int selectedIndex = Puesto_cbx.getSelectedIndex();
+
+            if (id.isEmpty() || nombre.isEmpty() || telefono.isEmpty() || selectedIndex == 0) {
+                showError("Complete todos los campos y seleccione un puesto.");
                 return;
             }
-            javax.swing.JOptionPane.showMessageDialog(this, "Empleado eliminado correctamente.");
-            Limpiar_btnActionPerformed(evt);
 
-        } catch (Exception e) {
-            javax.swing.JOptionPane.showMessageDialog(this, e.getMessage(), "Excepción de Negocio", javax.swing.JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_Eliminar_btnActionPerformed
-
-    private void Limpiar_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Limpiar_btnActionPerformed
-Id_txt.setText("");
-        Nombre_txt.setText("");
-        Telefono_txt.setText("");
-        Puesto_cbx.setSelectedIndex(0);
-        jTextField1.setText("");
-        Id_txt.setEditable(true);
-    }//GEN-LAST:event_Limpiar_btnActionPerformed
-
-    private void Buscar_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Buscar_btnActionPerformed
-try {
-        String id = Id_txt.getText().trim();
-        if (id.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Ingrese la identificación del empleado que desea buscar.", "Aviso", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        
-        Empleado emp = controlador.buscarPorIdentificacion(id);
-
-        if (emp != null) {
-            Nombre_txt.setText(emp.getNombreCompleto());
-            Telefono_txt.setText(emp.getTelefono());
-       
-            if (emp.getPuesto() != null) {
-                switch (emp.getPuesto()) {
-                    case Administrador -> Puesto_cbx.setSelectedItem("Administrador");
-                    case Recepcionista -> Puesto_cbx.setSelectedItem("Recepcionista");
-                    case EncargadoBodega -> Puesto_cbx.setSelectedItem("Encargado de Bodega");
-                    case Mantenimiento -> Puesto_cbx.setSelectedItem("Mantenimiento");
-                    case OperarioCarga -> Puesto_cbx.setSelectedItem("Operario de Carga");
-                }
-                jTextField1.setText(String.valueOf(emp.getPuesto().getSalario()));
+            String puestoStr = Puesto_cbx.getSelectedItem().toString();
+            PuestoEmpleado puestoEnum = switch (puestoStr) {
+                case "Administrador" -> PuestoEmpleado.Administrador;
+                case "Recepcionista" -> PuestoEmpleado.Recepcionista;
+                case "Encargado de Bodega" -> PuestoEmpleado.EncargadoBodega;
+                case "Mantenimiento" -> PuestoEmpleado.Mantenimiento;
+                case "Operario de Carga" -> PuestoEmpleado.OperarioCarga;
+                default -> null;
+            };
+            
+            if (puestoEnum == null) {
+                showError("Debe seleccionar un puesto válido.");
+                return;
             }
-       
-            Id_txt.setEditable(false);
-            JOptionPane.showMessageDialog(this, "Empleado encontrado.");
-        } else {
-            JOptionPane.showMessageDialog(this, "No se encontró ningún empleado con esa identificación.", "No encontrado", JOptionPane.INFORMATION_MESSAGE);
+
+            Empleado nuevoEmpleado = new Empleado(id, nombre, telefono, puestoEnum);
+            controller.agregarEmpleado(nuevoEmpleado);
+            showMessage("Empleado agregado correctamente.");
+            cargarEmpleados();
+            clear();
+
+        } catch (DatosInvalidosException e) {
+            showError(e.getMessage());
+        } catch (Exception e) {
+            showError("Ocurrió un error al agregar: " + e.getMessage());
         }
-
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error al buscar: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
-    }//GEN-LAST:event_Buscar_btnActionPerformed
-=======
-    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-         try {
-        String identificacion = Id_txt.getText();
-        String nombreCompleto = Nombre_txt.getText();
-        String telefono = Telefono_txt.getText();
-        String puesto = Puesto_cbx.getSelectedItem().toString();
-        PuestoEmpleado puestoEmpleado =controller.obtenerPuesto(puesto);
-        Empleado empleado =new Empleado(identificacion,nombreCompleto,telefono,puestoEmpleado);
-        controller.agregarEmpleado(empleado);
-        showMessage("Empleado agregado correctamente");
-        cargarEmpleados();
-        clear();
-    } catch (DatosInvalidosException ex) {
-        showError(ex.getMessage());
-    }
-    }//GEN-LAST:event_btnAgregarActionPerformed
 
-    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
-       try {
-        String identificacion = Id_txt.getText();
-        String nombreCompleto = Nombre_txt.getText();
-        String telefono = Telefono_txt.getText();
-        String puesto = Puesto_cbx.getSelectedItem().toString();
-        PuestoEmpleado puestoEmpleado =controller.obtenerPuesto(puesto);
-        controller.actualizarEmpleado(identificacion,nombreCompleto,telefono,puestoEmpleado);
-        showMessage("Empleado actualizado correctamente");
-        cargarEmpleados();
-        clear();
-    } catch (DatosInvalidosException ex) {
-        showError(ex.getMessage());
-    }
-    }//GEN-LAST:event_btnActualizarActionPerformed
-
-    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+    private void Actualizar_btnActionPerformed(java.awt.event.ActionEvent evt) {
         try {
-        String identificacion = Id_txt.getText();
-        controller.eliminarEmpleado(identificacion);
-        showMessage("Empleado eliminado correctamente");
-        cargarEmpleados();
-        clear();
-    } catch (DatosInvalidosException ex) {
-        showError(ex.getMessage());
+            String id = Id_txt.getText().trim();
+            String nombre = Nombre_txt.getText().trim();
+            String telefono = Telefono_txt.getText().trim();
+            int selectedIndex = Puesto_cbx.getSelectedIndex();
+
+            if (id.isEmpty()) {
+                showError("Debe ingresar la identificación del empleado a actualizar.");
+                return;
+            }
+
+            if (selectedIndex == 0) {
+                showError("Debe seleccionar un puesto válido.");
+                return;
+            }
+
+            String puestoStr = Puesto_cbx.getSelectedItem().toString();
+            PuestoEmpleado puestoEnum = switch (puestoStr) {
+                case "Administrador" -> PuestoEmpleado.Administrador;
+                case "Recepcionista" -> PuestoEmpleado.Recepcionista;
+                case "Encargado de Bodega" -> PuestoEmpleado.EncargadoBodega;
+                case "Mantenimiento" -> PuestoEmpleado.Mantenimiento;
+                case "Operario de Carga" -> PuestoEmpleado.OperarioCarga;
+                default -> null;
+            };
+
+            controller.actualizarEmpleado(id, nombre, telefono, puestoEnum);
+            showMessage("Empleado actualizado correctamente.");
+            cargarEmpleados();
+            clear();
+
+        } catch (DatosInvalidosException e) {
+            showError(e.getMessage());
+        } catch (Exception e) {
+            showError("Error al actualizar: " + e.getMessage());
+        }
     }
-    }//GEN-LAST:event_btnEliminarActionPerformed
 
-    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
-          clear();
-    }//GEN-LAST:event_btnLimpiarActionPerformed
+    private void Eliminar_btnActionPerformed(java.awt.event.ActionEvent evt) {
+        try {
+            String id = Id_txt.getText().trim();
+            if (id.isEmpty()) {
+                showError("Ingrese la identificación del empleado que desea eliminar.");
+                return;
+            }
+            controller.eliminarEmpleado(id);
+            showMessage("Empleado eliminado correctamente.");
+            cargarEmpleados();
+            clear();
 
-    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        } catch (DatosInvalidosException e) {
+            showError(e.getMessage());
+        } catch (Exception e) {
+            showError("Excepción de Negocio: " + e.getMessage());
+        }
+    }
 
-    BuscarEmpleado buscarEmpleado =
-    new BuscarEmpleado(controller, this);
-    buscarEmpleado.setVisible(true);
-    }//GEN-LAST:event_btnBuscarActionPerformed
->>>>>>> 11afa1b66bc860c4bfac42a01f22c2de58ee3a71
+    private void Limpiar_btnActionPerformed(java.awt.event.ActionEvent evt) {
+        clear();
+    }
+
+    private void Buscar_btnActionPerformed(java.awt.event.ActionEvent evt) {
+        BuscarEmpleado buscarEmpleado = new BuscarEmpleado(controller, this);
+        buscarEmpleado.setVisible(true);
+    }
 
     public static void main(String args[]) {
-<<<<<<< HEAD
-   try {
-=======
-         StorageBoxController controller =
-            new StorageBoxController();
-    FrmEmpleado frmEmpleado =
-     new FrmEmpleado(controller);
-    frmEmpleado.setVisible(true);
-
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
         try {
->>>>>>> 11afa1b66bc860c4bfac42a01f22c2de58ee3a71
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
@@ -610,12 +400,10 @@ try {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
 
-<<<<<<< HEAD
-        java.awt.EventQueue.invokeLater(() -> new FrmEmpleado().setVisible(true));
-=======
-        /* Create and display the form */
-        
->>>>>>> 11afa1b66bc860c4bfac42a01f22c2de58ee3a71
+        java.awt.EventQueue.invokeLater(() -> {
+            StorageBoxController controller = new StorageBoxController();
+            new FrmEmpleado(controller).setVisible(true);
+        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -634,14 +422,6 @@ try {
     private javax.swing.JLabel Salario_lbl;
     private javax.swing.JLabel Telefono_lbl;
     private javax.swing.JTextField Telefono_txt;
-<<<<<<< HEAD
-=======
-    private javax.swing.JButton btnActualizar;
-    private javax.swing.JButton btnAgregar;
-    private javax.swing.JButton btnBuscar;
-    private javax.swing.JButton btnEliminar;
-    private javax.swing.JButton btnLimpiar;
->>>>>>> 11afa1b66bc860c4bfac42a01f22c2de58ee3a71
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
