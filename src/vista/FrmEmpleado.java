@@ -3,21 +3,76 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package vista;
-
+import controlador.FrmView;
+import controlador.StorageBoxController;
+import excepciones.DatosInvalidosException;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import modelo.Empleado;
+import modelo.PuestoEmpleado;
 /**
  *
  * @author norki
  */
-public class FrmEmpleado extends javax.swing.JFrame {
-    
+public class FrmEmpleado extends javax.swing.JFrame 
+      implements FrmView<Empleado> {
+     private StorageBoxController controller;
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrmEmpleado.class.getName());
 
     /**
      * Creates new form FrmEmpleado
+     * @param controller
      */
-    public FrmEmpleado() {
-        initComponents();
+    public FrmEmpleado(StorageBoxController controller) {
+         this.controller = controller;
+    initComponents();
+    cargarEmpleados();
     }
+    private void cargarEmpleados() {
+    DefaultTableModel modelo =
+            (DefaultTableModel) Empleados_tbl.getModel();
+    modelo.setRowCount(0);
+    ArrayList<Empleado> lista =
+    new ArrayList<>(controller.listarEmpleados());
+    for (int i = 0; i < lista.size(); i++) {
+        Empleado empleado = lista.get(i);
+        modelo.addRow(new Object[]{
+            empleado.getIdentificacion(),
+            empleado.getNombreCompleto(),
+            empleado.getTelefono(),
+            empleado.getPuesto(),
+            empleado.getSalario()
+        });
+    }
+}
+  @Override
+public void clear() {
+    Id_txt.setText("");
+    Nombre_txt.setText("");
+    Telefono_txt.setText("");
+    Puesto_cbx.setSelectedIndex(0);
+    jTextField1.setText("");
+}
+
+@Override
+public void showData(Empleado data) {
+    Id_txt.setText(data.getIdentificacion());
+    Nombre_txt.setText(data.getNombreCompleto());
+    Telefono_txt.setText(data.getTelefono());
+    Puesto_cbx.setSelectedItem(data.getPuesto());
+    jTextField1.setText(String.valueOf(data.getSalario()));
+}
+@Override
+public void showError(String error) {
+    JOptionPane.showMessageDialog(this,error, "Error", JOptionPane.ERROR_MESSAGE);
+}
+
+@Override
+public void showMessage(String message) {
+    JOptionPane.showMessageDialog(this,message,"StorageBox",JOptionPane.INFORMATION_MESSAGE);
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -41,14 +96,14 @@ public class FrmEmpleado extends javax.swing.JFrame {
         Puesto_cbx = new javax.swing.JComboBox<>();
         Salario_lbl = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        btnBuscar = new javax.swing.JButton();
+        btnAgregar = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
+        btnLimpiar = new javax.swing.JButton();
+        btnActualizar = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
         jLabel1.setText("Empleado");
@@ -92,7 +147,7 @@ public class FrmEmpleado extends javax.swing.JFrame {
         Puesto_lbl.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         Puesto_lbl.setText("Puesto");
 
-        Puesto_cbx.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Puesto 1", "Puesto 2", "Puesto 3", "Puesto 4", "Puesto 5", "Puesto 6" }));
+        Puesto_cbx.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Administrador", "Recepcionista", "Encargado Bodega", "Mantenimiento", "Operario Carga" }));
         Puesto_cbx.addActionListener(this::Puesto_cbxActionPerformed);
 
         Salario_lbl.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
@@ -100,20 +155,20 @@ public class FrmEmpleado extends javax.swing.JFrame {
 
         jTextField1.addActionListener(this::jTextField1ActionPerformed);
 
-        jButton1.setText("Agregar");
-        jButton1.addActionListener(this::jButton1ActionPerformed);
+        btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(this::btnBuscarActionPerformed);
 
-        jButton2.setText("Actualizar");
-        jButton2.addActionListener(this::jButton2ActionPerformed);
+        btnAgregar.setText("Agregar");
+        btnAgregar.addActionListener(this::btnAgregarActionPerformed);
 
-        jButton3.setText("Eliminar");
-        jButton3.addActionListener(this::jButton3ActionPerformed);
+        btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(this::btnEliminarActionPerformed);
 
-        jButton4.setText("Limpiar");
-        jButton4.addActionListener(this::jButton4ActionPerformed);
+        btnLimpiar.setText("Limpiar");
+        btnLimpiar.addActionListener(this::btnLimpiarActionPerformed);
 
-        jButton5.setText("Buscar");
-        jButton5.addActionListener(this::jButton5ActionPerformed);
+        btnActualizar.setText("Actualizar");
+        btnActualizar.addActionListener(this::btnActualizarActionPerformed);
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -140,16 +195,16 @@ public class FrmEmpleado extends javax.swing.JFrame {
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(layout.createSequentialGroup()
                                                 .addGap(75, 75, 75)
-                                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addGap(31, 31, 31)
-                                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                                             .addGroup(layout.createSequentialGroup()
                                                 .addGap(33, 33, 33)
-                                                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                                .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                                 .addGap(0, 60, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -188,13 +243,13 @@ public class FrmEmpleado extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Puesto_cbx, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton3)
-                    .addComponent(jButton5))
+                    .addComponent(btnAgregar)
+                    .addComponent(btnEliminar)
+                    .addComponent(btnBuscar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton4)
-                    .addComponent(jButton2))
+                    .addComponent(btnLimpiar)
+                    .addComponent(btnActualizar))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 373, Short.MAX_VALUE)
                 .addContainerGap())
@@ -216,37 +271,82 @@ public class FrmEmpleado extends javax.swing.JFrame {
     }//GEN-LAST:event_Telefono_txtActionPerformed
 
     private void Puesto_cbxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Puesto_cbxActionPerformed
-        // TODO add your handling code here:
+      String puesto =
+     Puesto_cbx.getSelectedItem().toString();
+    double salario =controller.obtenerSalario(puesto);
+    jTextField1.setText(String.valueOf(salario));
     }//GEN-LAST:event_Puesto_cbxActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+         try {
+        String identificacion = Id_txt.getText();
+        String nombreCompleto = Nombre_txt.getText();
+        String telefono = Telefono_txt.getText();
+        String puesto = Puesto_cbx.getSelectedItem().toString();
+        PuestoEmpleado puestoEmpleado =controller.obtenerPuesto(puesto);
+        Empleado empleado =new Empleado(identificacion,nombreCompleto,telefono,puestoEmpleado);
+        controller.agregarEmpleado(empleado);
+        showMessage("Empleado agregado correctamente");
+        cargarEmpleados();
+        clear();
+    } catch (DatosInvalidosException ex) {
+        showError(ex.getMessage());
+    }
+    }//GEN-LAST:event_btnAgregarActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+       try {
+        String identificacion = Id_txt.getText();
+        String nombreCompleto = Nombre_txt.getText();
+        String telefono = Telefono_txt.getText();
+        String puesto = Puesto_cbx.getSelectedItem().toString();
+        PuestoEmpleado puestoEmpleado =controller.obtenerPuesto(puesto);
+        controller.actualizarEmpleado(identificacion,nombreCompleto,telefono,puestoEmpleado);
+        showMessage("Empleado actualizado correctamente");
+        cargarEmpleados();
+        clear();
+    } catch (DatosInvalidosException ex) {
+        showError(ex.getMessage());
+    }
+    }//GEN-LAST:event_btnActualizarActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        try {
+        String identificacion = Id_txt.getText();
+        controller.eliminarEmpleado(identificacion);
+        showMessage("Empleado eliminado correctamente");
+        cargarEmpleados();
+        clear();
+    } catch (DatosInvalidosException ex) {
+        showError(ex.getMessage());
+    }
+    }//GEN-LAST:event_btnEliminarActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+          clear();
+    }//GEN-LAST:event_btnLimpiarActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton5ActionPerformed
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+
+    BuscarEmpleado buscarEmpleado =
+    new BuscarEmpleado(controller, this);
+    buscarEmpleado.setVisible(true);
+    }//GEN-LAST:event_btnBuscarActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+         StorageBoxController controller =
+            new StorageBoxController();
+    FrmEmpleado frmEmpleado =
+     new FrmEmpleado(controller);
+    frmEmpleado.setVisible(true);
+
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -265,7 +365,7 @@ public class FrmEmpleado extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new FrmEmpleado().setVisible(true));
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -279,11 +379,11 @@ public class FrmEmpleado extends javax.swing.JFrame {
     private javax.swing.JLabel Salario_lbl;
     private javax.swing.JLabel Telefono_lbl;
     private javax.swing.JTextField Telefono_txt;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JButton btnActualizar;
+    private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnLimpiar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;

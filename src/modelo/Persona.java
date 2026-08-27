@@ -1,16 +1,27 @@
 package modelo;
 
+import excepciones.DatosInvalidosException;
+
 public abstract class Persona {
     private final String identificacion;
     private String nombreCompleto;
     private String telefono;
 
-    protected Persona(String identificacion, String nombreCompleto, String telefono) {
-        this.identificacion = identificacion;
-        this.nombreCompleto = nombreCompleto;
-        this.telefono = telefono;
+   protected Persona(String identificacion, String nombreCompleto,
+            String telefono) throws DatosInvalidosException {
+    if (identificacion == null || identificacion.equals("")) {
+        throw new DatosInvalidosException("La identificacion es obligatoria");
     }
-
+    if (nombreCompleto == null || nombreCompleto.equals("")) {
+        throw new DatosInvalidosException("El nombre es obligatorio");
+    }
+    if (telefono == null || telefono.equals("")) {
+        throw new DatosInvalidosException("El telefono es obligatorio");
+    }
+    this.identificacion = identificacion;
+    this.nombreCompleto = nombreCompleto;
+    this.telefono = telefono;
+    }
     public String getIdentificacion() {
         return identificacion;
     }

@@ -77,7 +77,7 @@ public void showMessage(String message) {
         btnAceptar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         ID_lbl.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         ID_lbl.setText("Identificación");
@@ -204,23 +204,22 @@ public void showMessage(String message) {
     }//GEN-LAST:event_Nombre_txtActionPerformed
 
     private void Buscar_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Buscar_btnActionPerformed
-   try {
+
+    try {
         String identificacion = ID_txt.getText();
         String nombre = Nombre_txt.getText();
+        JOptionPane.showMessageDialog(this,"ID: " + identificacion + "\nNombre: " + nombre );
         ArrayList<Empleado> resultados =
                 new ArrayList<>();
         if (!identificacion.isEmpty()) {
-            Empleado empleado =
-                    controller.buscarEmpleadoPorIdentificacion(
-                            identificacion);
+            Empleado empleado =controller.buscarEmpleadoPorIdentificacion(identificacion);
             if (empleado != null) {
                 resultados.add(empleado);
             }
         } else if (!nombre.isEmpty()) {
-            resultados =
-       controller.buscarEmpleadosPorNombre(nombre);
+            resultados =controller.buscarEmpleadosPorNombre(nombre);
         } else {
-        resultados =new ArrayList<>(controller.listarEmpleados());
+            resultados =new ArrayList<>(controller.listarEmpleados());
         }
         DefaultTableModel modelo =
                 (DefaultTableModel) Tablita_tbl.getModel();
@@ -235,11 +234,12 @@ public void showMessage(String message) {
                 empleado.getSalario()
             });
         }
+
         if (resultados.isEmpty()) {
             showMessage("No se encontró ningún empleado");
         }
-    } catch (Exception ex) {
 
+    } catch (Exception ex) {
         showError(ex.getMessage());
     }
     }//GEN-LAST:event_Buscar_btnActionPerformed
